@@ -93,7 +93,7 @@ The tool exports the same risk register in four formats:
 - CSV for spreadsheet review
 - JSON for downstream automation
 - Markdown for GitHub, documentation, and executive-readable summaries
-- HTML for a polished BattleRisk-themed risk register
+- HTML for a polished static risk register
 
 Each output includes:
 
@@ -161,7 +161,7 @@ Questionnaire adjustments are capped at +/-1 per likelihood/impact dimension so 
 
 This project intentionally starts as a CLI plus report generator. That is the right shape for a GRC engineering artifact because it is automatable, testable, and easy to wire into CI, AWS Lambda, or scheduled assessment workflows.
 
-The generated HTML report provides the presentation layer without requiring a web app server. It includes a BattleRisk-style layout and an AI analysis placeholder with embedded structured JSON for a future model review workflow. A full UI can come later as a separate dashboard layer.
+The generated HTML report provides the presentation layer without requiring a web app server. It includes a small maintainer logo, neutral report styling, and an optional analysis placeholder with embedded structured JSON for a future model review workflow. A full UI can come later as a separate dashboard layer.
 
 ## AWS Pattern
 

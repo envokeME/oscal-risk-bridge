@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import base64
 import csv
 import html
 import json
 from dataclasses import asdict
+from importlib import resources
 from pathlib import Path
 
 from .models import RiskRegisterEntry
@@ -143,6 +145,12 @@ def _percent(value: float) -> str:
     return f"{value:.0%}"
 
 
+def _logo_data_uri() -> str:
+    logo = resources.files("oscal_risk_bridge.assets").joinpath("battle-risk-logo.png")
+    encoded = base64.b64encode(logo.read_bytes()).decode("ascii")
+    return f"data:image/png;base64,{encoded}"
+
+
 def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -197,58 +205,21 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
       box-shadow: 0 16px 42px rgba(24, 34, 53, 0.13);
     }}
 
-    .masthead {{
+    .report-header {{
       display: grid;
-      grid-template-columns: 0.82fr 1.45fr;
-      min-height: 304px;
-      background: var(--wash);
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: start;
+      padding: 34px 42px 32px;
+      background: #ffffff;
       border-bottom: 1px solid var(--line);
     }}
 
-    .brand-panel {{
-      padding: 42px;
-      background: var(--navy);
-      color: #ffffff;
-    }}
-
-    .mark {{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 72px;
-      height: 72px;
-      margin-bottom: 26px;
-      border: 3px solid #ffffff;
-      border-radius: 10px;
-      color: #ffffff;
-      font-size: 24px;
-      font-weight: 900;
-    }}
-
-    .brand-panel h1 {{
-      margin: 0 0 14px;
-      color: #ffffff;
-      font-size: 42px;
-      line-height: 1;
-    }}
-
-    .brand-panel p {{
-      max-width: 320px;
-      margin: 0;
-      color: #c6cfdd;
-      font-size: 15px;
-    }}
-
-    .hero-copy {{
-      padding: 44px 52px 40px;
-      background: #ffffff;
-    }}
-
-    .eyebrow {{
+    .kicker {{
       display: flex;
       gap: 10px;
       align-items: center;
-      margin: 0 0 22px;
+      margin: 0 0 16px;
       color: var(--teal);
       font-size: 12px;
       font-weight: 700;
@@ -256,20 +227,28 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
       text-transform: uppercase;
     }}
 
-    .eyebrow::before {{
+    .kicker::before {{
       content: "";
       width: 32px;
       height: 2px;
       background: var(--teal);
     }}
 
-    .hero-copy h2 {{
+    .report-header h1 {{
       max-width: 700px;
       margin: 0;
       color: var(--navy);
-      font-size: 42px;
-      line-height: 1.04;
+      font-size: 36px;
+      line-height: 1.08;
       letter-spacing: 0;
+    }}
+
+    .report-logo {{
+      display: block;
+      width: 176px;
+      max-width: 26vw;
+      height: auto;
+      opacity: 0.86;
     }}
 
     .subtitle {{
@@ -566,10 +545,15 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
       }}
 
       .summary-grid,
-      .masthead,
+      .report-header,
       .ai-panel,
       .scenario-body {{
         grid-template-columns: 1fr;
+      }}
+
+      .report-logo {{
+        width: 150px;
+        max-width: 100%;
       }}
 
       .scenario-head {{
@@ -588,23 +572,19 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
 </head>
 <body>
   <div class="page">
-    <header class="masthead">
-      <aside class="brand-panel">
-        <div class="mark">BR</div>
-        <h1>BattleRisk</h1>
-        <p>GRC engineering, trust infrastructure, and AI-assisted risk advisory.</p>
-      </aside>
-      <div class="hero-copy">
-        <p class="eyebrow">OSCAL Risk Bridge</p>
-        <h2>NIST CSF-Aligned Risk Register</h2>
+    <header class="report-header">
+      <div class="report-copy">
+        <p class="kicker">OSCAL Risk Bridge</p>
+        <h1>NIST CSF-Aligned Risk Register</h1>
         <p class="subtitle">Control assessment findings translated into risk scenarios, CSF outcomes, evidence, ownership, and response guidance.</p>
         <div class="badges">
-          <span class="tag">OSCAL Findings</span>
+          <span class="tag">OSCAL Assessment Results</span>
           <span class="tag">NIST CSF 2.0</span>
+          <span class="tag">Context Questionnaire</span>
           <span class="tag">Risk Register</span>
-          <span class="tag">AI-Ready Data</span>
         </div>
       </div>
+      <img class="report-logo" src="{_logo_data_uri()}" alt="Battle Risk">
     </header>
     <main>
       <div class="summary-grid">
@@ -659,11 +639,11 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
       </section>
 
       <section>
-        <h2>AI Analysis Placeholder</h2>
+        <h2>Optional Analysis Placeholder</h2>
         <div class="ai-panel">
           <div>
-            <h3>Future AI Review Lane</h3>
-            <p>This report embeds the structured risk register data for downstream AI review, but does not send data to an external model. A future integration can summarize themes, identify correlated scenarios, suggest treatment options, and draft leadership-ready risk commentary.</p>
+            <h3>Structured Data for Review</h3>
+            <p>This report embeds the structured risk register data for downstream review or AI-assisted analysis, but does not send data to an external model. A future integration can summarize themes, identify correlated scenarios, suggest treatment options, and draft risk commentary for human review.</p>
           </div>
           <ul class="ai-checklist">
             <li>Embedded JSON payload: <strong>risk-register-data</strong></li>

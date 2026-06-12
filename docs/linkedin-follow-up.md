@@ -22,7 +22,7 @@ The idea is not to replace OSCAL or compliance reporting. It is to explore the l
 - Together, those findings may describe an unauthorized access scenario.
 - A failed `SC-7` finding plus `CM-6` drift may point to external attack surface exposure.
 
-The project runs locally with sample OSCAL-formatted assessment results and produces CSV, JSON, Markdown, and BattleRisk-themed HTML risk register outputs. Each risk scenario includes NIST CSF 2.0 function/category/outcome alignment, weighted control coverage, confidence, evidence, owner, response guidance, and the context adjustments that influenced likelihood or impact.
+The project runs locally with sample OSCAL-formatted assessment results and produces CSV, JSON, Markdown, and static HTML risk register outputs. Each risk scenario includes NIST CSF 2.0 function/category/outcome alignment, weighted control coverage, confidence, evidence, owner, response guidance, and the context adjustments that influenced likelihood or impact.
 
 I added a small questionnaire layer because a failed control does not always mean the same thing in every environment. Asset criticality, data sensitivity, internet exposure, compensating controls, remediation timing, and detection coverage all change the risk conversation.
 

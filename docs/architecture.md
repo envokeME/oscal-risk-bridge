@@ -70,7 +70,7 @@ Questionnaire adjustments are capped at +/-1 per likelihood/impact dimension. Th
 
 `exporters.py` writes the resulting risk register as CSV, JSON, Markdown, and HTML.
 
-CSV is useful for spreadsheet review. JSON is useful for downstream workflow automation, dashboards, or API integration. Markdown is useful for GitHub and documentation. HTML is useful for a polished BattleRisk-themed risk register that can be shared or screenshotted.
+CSV is useful for spreadsheet review. JSON is useful for downstream workflow automation, dashboards, or API integration. Markdown is useful for GitHub and documentation. HTML is useful for a polished static risk register that can be shared or screenshotted.
 
 The exports include CSF function, category, outcomes, and rationale so reviewers can trace a risk register row back to a recognizable cybersecurity risk management language.
 

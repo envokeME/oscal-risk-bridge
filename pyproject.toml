@@ -25,3 +25,6 @@ oscal-risk-bridge = "oscal_risk_bridge.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"oscal_risk_bridge.assets" = ["*.png"]

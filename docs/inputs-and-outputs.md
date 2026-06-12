@@ -20,7 +20,7 @@ The questionnaire is intentionally separate from the OSCAL file. OSCAL remains t
 | CSV | `examples/risk-register.sample.csv` | Spreadsheet review, risk register import, and governance workflows. |
 | JSON | `examples/risk-register.sample.json` | Automation, API integration, dashboards, and future AI review. |
 | Markdown | `examples/risk-register.sample.md` | GitHub review, documentation, and executive-readable summaries. |
-| HTML | `examples/risk-register.sample.html` | Static, polished BattleRisk-themed report for presentation and screenshots. |
+| HTML | `examples/risk-register.sample.html` | Static, polished report for presentation and screenshots. |
 
 Each output includes the mapped scenario, NIST CSF 2.0 alignment, risk statement, likelihood, impact, score, rating, control coverage, weighted exposure, confidence, evidence, context adjustments, aggregation notes, owner, and recommended response.
 

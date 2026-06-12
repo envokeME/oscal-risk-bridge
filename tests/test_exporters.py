@@ -80,8 +80,8 @@ class ExporterTests(unittest.TestCase):
 
         self.assertIn("<!doctype html>", output)
         self.assertIn("NIST CSF-Aligned Risk Register", output)
-        self.assertIn("BattleRisk", output)
-        self.assertIn("AI Analysis Placeholder", output)
+        self.assertIn('alt="Battle Risk"', output)
+        self.assertIn("Optional Analysis Placeholder", output)
         self.assertIn("Avg Confidence", output)
         self.assertIn("Control Coverage", output)
         self.assertIn("risk-register-data", output)
