@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 
 from .engine import build_risk_register
-from .exporters import write_csv, write_json
+from .exporters import write_csv, write_json, write_markdown
 from .mapping import load_risk_scenarios
 from .oscal import load_oscal_findings
 
@@ -18,6 +18,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--mapping", required=True, type=Path, help="Risk scenario mapping JSON")
     parser.add_argument("--out", required=True, type=Path, help="CSV risk register output path")
     parser.add_argument("--json-out", type=Path, help="Optional JSON risk register output path")
+    parser.add_argument("--markdown-out", type=Path, help="Optional Markdown risk report output path")
     parser.add_argument(
         "--include-empty",
         action="store_true",
@@ -33,12 +34,15 @@ def main(argv: list[str] | None = None) -> int:
     write_csv(entries, args.out)
     if args.json_out:
         write_json(entries, args.json_out)
+    if args.markdown_out:
+        write_markdown(entries, args.markdown_out)
 
     print(f"Parsed {len(findings)} OSCAL findings.")
     print(f"Generated {len(entries)} risk register entries.")
     print(f"Wrote CSV: {args.out}")
     if args.json_out:
         print(f"Wrote JSON: {args.json_out}")
+    if args.markdown_out:
+        print(f"Wrote Markdown: {args.markdown_out}")
 
     return 0
-

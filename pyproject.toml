@@ -12,7 +12,7 @@ authors = [
   { name = "Risk Engineering Demo" }
 ]
 license = { text = "MIT" }
-keywords = ["oscal", "grc", "risk", "security", "risk-register"]
+keywords = ["oscal", "grc", "risk-engineering", "security", "risk-register"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
@@ -25,4 +25,3 @@ oscal-risk-bridge = "oscal_risk_bridge.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-

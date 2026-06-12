@@ -47,3 +47,61 @@ def write_json(entries: list[RiskRegisterEntry], path: Path) -> None:
         json.dump([asdict(entry) for entry in entries], file, indent=2)
         file.write("\n")
 
+
+def write_markdown(entries: list[RiskRegisterEntry], path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    lines = [
+        "# Risk Register Report",
+        "",
+        "Generated from OSCAL assessment findings using OSCAL Risk Bridge.",
+        "",
+        "## Executive Summary",
+        "",
+        "| Scenario | Domain | Rating | Score | Owner |",
+        "| --- | --- | --- | ---: | --- |",
+    ]
+
+    for entry in entries:
+        lines.append(
+            "| "
+            f"{_escape_table(entry.title)} | "
+            f"{_escape_table(entry.domain)} | "
+            f"{entry.rating} | "
+            f"{entry.score} | "
+            f"{_escape_table(entry.owner)} |"
+        )
+
+    for entry in entries:
+        lines.extend(
+            [
+                "",
+                f"## {entry.scenario_id}: {entry.title}",
+                "",
+                f"**Rating:** {entry.rating}  ",
+                f"**Likelihood:** {entry.likelihood}/5  ",
+                f"**Impact:** {entry.impact}/5  ",
+                f"**Owner:** {entry.owner}",
+                "",
+                "### Risk Statement",
+                "",
+                entry.risk_statement,
+                "",
+                "### Failed Controls",
+                "",
+                ", ".join(entry.failed_controls),
+                "",
+                "### Evidence",
+                "",
+            ]
+        )
+        lines.extend(f"- {evidence}" for evidence in entry.evidence)
+        lines.extend(["", "### Recommended Response", "", entry.response, ""])
+
+    with path.open("w", encoding="utf-8") as file:
+        file.write("\n".join(lines).rstrip())
+        file.write("\n")
+
+
+def _escape_table(value: str) -> str:
+    return value.replace("|", "\\|")

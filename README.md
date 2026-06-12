@@ -1,110 +1,139 @@
 # OSCAL Risk Bridge
 
-OSCAL Risk Bridge is a small risk engineering project that translates control assessment findings into risk scenarios and risk register outputs.
+[![tests](https://github.com/envokeME/oscal-risk-bridge/actions/workflows/tests.yml/badge.svg)](https://github.com/envokeME/oscal-risk-bridge/actions/workflows/tests.yml)
 
-Most GRC automation stops at control status: passed, failed, open, or not satisfied. This project explores the next layer up:
+OSCAL Risk Bridge is a Python risk engineering prototype that translates OSCAL-formatted control findings into business-readable risk scenarios and risk register outputs.
+
+The goal is to bridge a common gap in GRC automation: control assessment tools can tell us which controls failed, but risk managers still have to explain what those failures mean in operational and leadership terms.
+
+## Why This Project Exists
+
+Most automation in GRC focuses on evidence collection, control status, and compliance reporting. This project explores the layer above that:
 
 - What risk does a failed control actually create?
-- How do multiple failed controls aggregate into a scenario leadership can understand?
-- How can OSCAL-formatted technical findings become a usable risk register?
+- How do multiple failed controls combine into a meaningful risk scenario?
+- How can technical assessment findings become language a risk owner can act on?
 
-The project is intentionally local-first. You can run the full demo without AWS, cloud credentials, or paid services. The `aws/` folder includes a reference pattern for deploying the same flow with S3, Lambda, and EventBridge later.
+This is not intended to replace OSCAL, FAIR, NIST 800-30, or an enterprise risk methodology. It is a small bridge between control assessment results and risk identification.
 
-## Flow
+## What It Does
 
-```text
-OSCAL assessment results
-        |
-        v
-Control finding parser
-        |
-        v
-Risk scenario mapping
-        |
-        v
-Scenario aggregation and scoring
-        |
-        v
-CSV / JSON risk register
+```mermaid
+flowchart LR
+    A["OSCAL assessment-results JSON"] --> B["Parse failed findings"]
+    B --> C["Normalize control IDs"]
+    C --> D["Map controls to risk scenarios"]
+    D --> E["Aggregate likelihood and impact"]
+    E --> F["Export risk register"]
 ```
 
-## Quick Start
+Given sample OSCAL assessment findings such as failed `AC-2`, `IA-2`, `AU-6`, `SC-7`, and `CM-6` controls, the tool produces risk register entries like:
 
-Requires Python 3.10 or newer.
+| Scenario | Domain | Rating | Why it matters |
+| --- | --- | --- | --- |
+| Unauthorized privileged access | Identity and Access Risk | Critical | Account lifecycle and MFA failures create a plausible path for misuse of privileged accounts. |
+| External attack surface exposure | Infrastructure Risk | Critical | Boundary protection gaps and configuration drift increase exposure to production systems. |
+| Delayed detection of suspicious activity | Security Operations Risk | Moderate | Inconsistent audit review reduces confidence that suspicious activity will be escalated in time. |
+
+## Demo
+
+Run the local demo:
 
 ```powershell
-python -m venv .venv
+git clone https://github.com/envokeME/oscal-risk-bridge.git
+cd oscal-risk-bridge
+
+py -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install -e .
-python -m oscal_risk_bridge `
+py -m pip install -e .
+
+oscal-risk-bridge `
   --findings examples/oscal-assessment-results.json `
   --mapping mappings/risk-scenarios.json `
   --out demo-output/risk-register.csv `
-  --json-out demo-output/risk-register.json
+  --json-out demo-output/risk-register.json `
+  --markdown-out demo-output/risk-register.md
 ```
 
-Or run directly from source without installing:
+Expected result:
 
-```powershell
-$env:PYTHONPATH="src"
-python -m oscal_risk_bridge --findings examples/oscal-assessment-results.json --mapping mappings/risk-scenarios.json --out demo-output/risk-register.csv --json-out demo-output/risk-register.json
+```text
+Parsed 5 OSCAL findings.
+Generated 3 risk register entries.
+Wrote CSV: demo-output\risk-register.csv
+Wrote JSON: demo-output\risk-register.json
+Wrote Markdown: demo-output\risk-register.md
 ```
 
-## Example Output
+If `py` is not available, use `python` instead.
 
-The CSV risk register includes:
+## Outputs
 
-- Scenario ID and title
-- Business-readable risk statement
-- Aggregated likelihood, impact, and rating
-- Mapped failed controls
-- Evidence from the originating OSCAL findings
-- Suggested owner and response
+The tool exports the same risk register in three formats:
 
-Example risk statement:
+- CSV for spreadsheet review
+- JSON for downstream automation
+- Markdown for GitHub, documentation, and executive-readable summaries
 
-> Unauthorized access risk increases because account lifecycle controls and MFA enforcement have failed, making it more likely that orphaned or weakly protected accounts remain active.
+Sample outputs:
+
+- [Sample CSV risk register](examples/risk-register.sample.csv)
+- [Sample JSON risk register](examples/risk-register.sample.json)
+- [Sample Markdown risk report](examples/risk-register.sample.md)
 
 ## Project Structure
 
 ```text
 src/oscal_risk_bridge/     Python package and CLI
-examples/                  Sample OSCAL assessment-results input
-mappings/                  Control-to-risk-scenario mapping file
-docs/                      Architecture notes and LinkedIn follow-up draft
-aws/                       Optional AWS deployment notes and sample config
+examples/                  Sample OSCAL input and generated outputs
+mappings/                  Control-to-risk-scenario mapping data
+docs/                      Architecture notes and portfolio narrative
+aws/                       Optional S3/Lambda deployment pattern
 tests/                     Unit tests
-demo-output/               Generated locally by the demo command
 ```
 
-## Design Notes
+## Design Choices
 
-The scoring model is deliberately simple and transparent:
+The project keeps the subjective risk translation layer in data instead of hiding it in code.
+
+`mappings/risk-scenarios.json` defines:
+
+- Scenario title and risk domain
+- Business-readable risk statement template
+- Owner and response recommendation
+- Control mappings and weights
+- Base likelihood and impact
+
+The scoring model is intentionally simple and explainable:
 
 1. Parse failed or open OSCAL findings.
 2. Normalize control IDs such as `AC-2`, `IA-2`, or `SC-7`.
 3. Match failed controls to mapped risk scenarios.
 4. Aggregate evidence by scenario.
-5. Adjust likelihood based on mapped control weight and finding severity.
-6. Export a risk register that can be reviewed by risk managers.
-
-This is not a replacement for FAIR, NIST 800-30, or enterprise risk methodology. It is a bridge between control assessment evidence and risk identification.
+5. Adjust likelihood and impact based on control weight and severity.
+6. Export a risk register a human risk owner can review.
 
 ## AWS Pattern
 
-The AWS version can be built with:
+The project runs locally without AWS. The optional AWS pattern is:
 
-- S3 bucket for OSCAL assessment-results uploads
-- Lambda function running this package
-- S3 output prefix for generated risk registers
-- EventBridge notification when new risk registers are created
+```text
+S3 upload -> Lambda -> OSCAL Risk Bridge -> S3 risk register outputs
+```
 
-The included AWS files are intentionally examples, not account-specific infrastructure.
+See [aws/README.md](aws/README.md) for the deployment concept.
+
+## Tests
+
+```powershell
+py -m unittest discover -s tests -p "test_*.py"
+```
 
 ## Roadmap
 
-- Add support for richer OSCAL assessment-results fields
+- Support more OSCAL assessment-results fields
 - Add scenario confidence scoring
-- Add risk treatment recommendations
-- Add GitHub Actions test workflow
+- Add richer risk treatment recommendations
 - Add optional API endpoint for uploading findings
+- Add an HTML dashboard for browsing generated risk scenarios
+
