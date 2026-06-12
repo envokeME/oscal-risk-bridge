@@ -46,6 +46,7 @@ This project demonstrates practical risk engineering:
 - Optional AWS Lambda/S3 deployment pattern
 - GitHub Actions test workflow
 - Static HTML report generation
+- AI-ready embedded report data for future model review
 
 ## Employer-Relevant Signal
 

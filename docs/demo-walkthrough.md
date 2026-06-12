@@ -68,4 +68,4 @@ For LinkedIn or portfolio review, open the HTML report:
 start demo-output/risk-register.html
 ```
 
-The HTML output is static and self-contained, so it can be attached, screenshot, or hosted without running a backend service.
+The HTML output is static and self-contained, so it can be attached, screenshot, or hosted without running a backend service. It uses a BattleRisk-style executive report theme and includes an AI analysis placeholder with embedded structured JSON for future model review.

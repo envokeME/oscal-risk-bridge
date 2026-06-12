@@ -55,9 +55,11 @@ The model is simple by design. It is meant to produce explainable first-pass ris
 
 `exporters.py` writes the resulting risk register as CSV, JSON, Markdown, and HTML.
 
-CSV is useful for spreadsheet review. JSON is useful for downstream workflow automation, dashboards, or API integration. Markdown is useful for GitHub and documentation. HTML is useful for a polished browser-readable risk register that can be shared or screenshotted.
+CSV is useful for spreadsheet review. JSON is useful for downstream workflow automation, dashboards, or API integration. Markdown is useful for GitHub and documentation. HTML is useful for a polished BattleRisk-themed risk register that can be shared or screenshotted.
 
 The exports include CSF function, category, outcomes, and rationale so reviewers can trace a risk register row back to a recognizable cybersecurity risk management language.
+
+The HTML report also embeds the generated risk register as a JSON payload in a `risk-register-data` script tag. This creates a placeholder for future AI review without sending assessment data to an external service.
 
 ## Local vs AWS
 

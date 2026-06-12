@@ -139,17 +139,17 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
   <style>
     :root {{
       color-scheme: light;
-      --ink: #17202a;
-      --muted: #5e6a75;
-      --line: #d8dee6;
+      --navy: #182235;
+      --ink: #202938;
+      --muted: #657184;
+      --line: #d8dfeb;
       --surface: #ffffff;
-      --soft: #f6f8fb;
-      --navy: #12304a;
-      --teal: #0f766e;
-      --gold: #b7791f;
-      --red: #b42318;
-      --green: #2f855a;
-      --blue: #2563eb;
+      --wash: #f3f6fb;
+      --teal: #147d79;
+      --indigo: #4257a8;
+      --gold: #b9822e;
+      --rose: #b84b5c;
+      --red: #a93f42;
     }}
 
     * {{
@@ -158,47 +158,118 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
 
     body {{
       margin: 0;
-      background: #eef2f6;
+      background: #eef2f7;
       color: var(--ink);
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.5;
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      line-height: 1.45;
     }}
 
     .page {{
       max-width: 1180px;
-      margin: 0 auto;
+      margin: 28px auto;
       background: var(--surface);
-      min-height: 100vh;
+      min-height: calc(100vh - 56px);
+      border: 1px solid #cdd5e3;
+      box-shadow: 0 16px 42px rgba(24, 34, 53, 0.13);
     }}
 
-    header {{
+    .masthead {{
+      display: grid;
+      grid-template-columns: 0.82fr 1.45fr;
+      min-height: 304px;
+      background: var(--wash);
+      border-bottom: 1px solid var(--line);
+    }}
+
+    .brand-panel {{
+      padding: 42px;
       background: var(--navy);
       color: #ffffff;
-      padding: 34px 42px 30px;
-      border-bottom: 6px solid var(--teal);
+    }}
+
+    .mark {{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      margin-bottom: 26px;
+      border: 3px solid #ffffff;
+      border-radius: 10px;
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 900;
+    }}
+
+    .brand-panel h1 {{
+      margin: 0 0 14px;
+      color: #ffffff;
+      font-size: 42px;
+      line-height: 1;
+    }}
+
+    .brand-panel p {{
+      max-width: 320px;
+      margin: 0;
+      color: #c6cfdd;
+      font-size: 15px;
+    }}
+
+    .hero-copy {{
+      padding: 44px 52px 40px;
+      background: #ffffff;
     }}
 
     .eyebrow {{
-      margin: 0 0 8px;
-      color: #b8d7d3;
-      font-size: 13px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 0 0 22px;
+      color: var(--teal);
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: 0;
       text-transform: uppercase;
     }}
 
-    h1 {{
+    .eyebrow::before {{
+      content: "";
+      width: 32px;
+      height: 2px;
+      background: var(--teal);
+    }}
+
+    .hero-copy h2 {{
+      max-width: 700px;
       margin: 0;
-      font-size: 34px;
-      line-height: 1.15;
+      color: var(--navy);
+      font-size: 42px;
+      line-height: 1.04;
       letter-spacing: 0;
     }}
 
     .subtitle {{
       max-width: 850px;
       margin: 14px 0 0;
-      color: #dce7ef;
+      color: var(--muted);
       font-size: 16px;
+    }}
+
+    .badges {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }}
+
+    .tag {{
+      padding: 9px 12px;
+      border: 1px solid var(--line);
+      background: var(--wash);
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 6px;
     }}
 
     main {{
@@ -216,7 +287,7 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 16px;
-      background: var(--soft);
+      background: var(--wash);
       min-height: 112px;
     }}
 
@@ -265,7 +336,7 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
     }}
 
     th {{
-      background: #edf3f8;
+      background: var(--wash);
       color: #203040;
       font-size: 13px;
       text-align: left;
@@ -302,7 +373,7 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
       grid-template-columns: 1fr auto;
       gap: 18px;
       padding: 18px 20px;
-      background: #f8fafc;
+      background: var(--wash);
       border-bottom: 1px solid var(--line);
     }}
 
@@ -383,9 +454,49 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
 
     .csf-panel {{
       border-left: 4px solid var(--teal);
-      background: #f0fdfa;
+      background: #eff9f8;
       padding: 14px;
       border-radius: 6px;
+    }}
+
+    .ai-panel {{
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 22px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--navy);
+      color: #ffffff;
+    }}
+
+    .ai-panel h3 {{
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.1;
+    }}
+
+    .ai-panel p {{
+      margin: 0;
+      color: #d8deea;
+      font-size: 14px;
+    }}
+
+    .ai-checklist {{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }}
+
+    .ai-checklist li {{
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #eef3f7;
+      font-size: 13px;
     }}
 
     .csf-panel p {{
@@ -431,6 +542,8 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
       }}
 
       .summary-grid,
+      .masthead,
+      .ai-panel,
       .scenario-body {{
         grid-template-columns: 1fr;
       }}
@@ -451,10 +564,23 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
 </head>
 <body>
   <div class="page">
-    <header>
-      <p class="eyebrow">OSCAL Risk Bridge</p>
-      <h1>NIST CSF-Aligned Risk Register</h1>
-      <p class="subtitle">Control assessment findings translated into risk scenarios, CSF outcomes, evidence, ownership, and response guidance.</p>
+    <header class="masthead">
+      <aside class="brand-panel">
+        <div class="mark">BR</div>
+        <h1>BattleRisk</h1>
+        <p>GRC engineering, trust infrastructure, and AI-assisted risk advisory.</p>
+      </aside>
+      <div class="hero-copy">
+        <p class="eyebrow">OSCAL Risk Bridge</p>
+        <h2>NIST CSF-Aligned Risk Register</h2>
+        <p class="subtitle">Control assessment findings translated into risk scenarios, CSF outcomes, evidence, ownership, and response guidance.</p>
+        <div class="badges">
+          <span class="tag">OSCAL Findings</span>
+          <span class="tag">NIST CSF 2.0</span>
+          <span class="tag">Risk Register</span>
+          <span class="tag">AI-Ready Data</span>
+        </div>
+      </div>
     </header>
     <main>
       <div class="summary-grid">
@@ -502,6 +628,21 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
       </section>
 
       <section>
+        <h2>AI Analysis Placeholder</h2>
+        <div class="ai-panel">
+          <div>
+            <h3>Future AI Review Lane</h3>
+            <p>This report embeds the structured risk register data for downstream AI review, but does not send data to an external model. A future integration can summarize themes, identify correlated scenarios, suggest treatment options, and draft leadership-ready risk commentary.</p>
+          </div>
+          <ul class="ai-checklist">
+            <li>Embedded JSON payload: <strong>risk-register-data</strong></li>
+            <li>Suggested prompt: identify top drivers, common control themes, and response priorities.</li>
+            <li>Human review required before risk ratings, responses, or ownership changes are accepted.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
         <h2>Risk Scenarios</h2>
         <div class="scenario-grid">
           {_scenario_cards(entries)}
@@ -511,6 +652,7 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
     <footer>
       Generated by OSCAL Risk Bridge. This report is a decision-support artifact, not a formal compliance attestation.
     </footer>
+    <script type="application/json" id="risk-register-data">{_embedded_json(entries)}</script>
   </div>
 </body>
 </html>
@@ -587,3 +729,7 @@ def _rating_badge(rating: str) -> str:
 
 def _h(value: str) -> str:
     return html.escape(str(value), quote=True)
+
+
+def _embedded_json(entries: list[RiskRegisterEntry]) -> str:
+    return html.escape(json.dumps([asdict(entry) for entry in entries], indent=2), quote=False)

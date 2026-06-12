@@ -77,7 +77,7 @@ The tool exports the same risk register in three formats:
 - CSV for spreadsheet review
 - JSON for downstream automation
 - Markdown for GitHub, documentation, and executive-readable summaries
-- HTML for a polished browser-readable risk register
+- HTML for a polished BattleRisk-themed risk register
 
 Each output includes:
 
@@ -86,6 +86,7 @@ Each output includes:
 - NIST CSF 2.0 function/category/outcomes
 - Likelihood, impact, score, and rating
 - Evidence and recommended response
+- AI analysis placeholder with embedded structured risk data
 
 Sample outputs:
 
@@ -133,7 +134,7 @@ The scoring model is intentionally simple and explainable:
 
 This project intentionally starts as a CLI plus report generator. That is the right shape for a GRC engineering artifact because it is automatable, testable, and easy to wire into CI, AWS Lambda, or scheduled assessment workflows.
 
-The generated HTML report provides the presentation layer without requiring a web app server. A full UI can come later as a separate dashboard layer.
+The generated HTML report provides the presentation layer without requiring a web app server. It includes a BattleRisk-style layout and an AI analysis placeholder with embedded structured JSON for a future model review workflow. A full UI can come later as a separate dashboard layer.
 
 ## AWS Pattern
 
