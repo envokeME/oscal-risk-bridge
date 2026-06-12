@@ -32,7 +32,8 @@ oscal-risk-bridge `
   --mapping mappings/risk-scenarios.json `
   --out demo-output/risk-register.csv `
   --json-out demo-output/risk-register.json `
-  --markdown-out demo-output/risk-register.md
+  --markdown-out demo-output/risk-register.md `
+  --html-out demo-output/risk-register.html
 ```
 
 ## Result
@@ -58,3 +59,13 @@ OSCAL finding -> failed control -> mapped scenario -> NIST CSF alignment -> risk
 ```
 
 This gives risk teams a starting point for review, prioritization, and treatment planning.
+
+## Presentation Output
+
+For LinkedIn or portfolio review, open the HTML report:
+
+```powershell
+start demo-output/risk-register.html
+```
+
+The HTML output is static and self-contained, so it can be attached, screenshot, or hosted without running a backend service.

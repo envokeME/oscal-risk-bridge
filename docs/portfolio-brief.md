@@ -25,7 +25,7 @@ The project uses a local-first Python CLI to:
 4. Map control failures to risk scenarios.
 5. Align scenarios to NIST CSF 2.0 functions, categories, and outcomes.
 6. Aggregate likelihood, impact, evidence, and response guidance.
-7. Export CSV, JSON, and Markdown risk register outputs.
+7. Export CSV, JSON, Markdown, and HTML risk register outputs.
 
 ## Why It Matters
 
@@ -45,6 +45,7 @@ This project demonstrates practical risk engineering:
 - Local CLI-first design
 - Optional AWS Lambda/S3 deployment pattern
 - GitHub Actions test workflow
+- Static HTML report generation
 
 ## Employer-Relevant Signal
 

@@ -53,9 +53,9 @@ The model is simple by design. It is meant to produce explainable first-pass ris
 
 ## 4. Export Risk Register
 
-`exporters.py` writes the resulting risk register as CSV, JSON, and Markdown.
+`exporters.py` writes the resulting risk register as CSV, JSON, Markdown, and HTML.
 
-CSV is useful for spreadsheet review. JSON is useful for downstream workflow automation, dashboards, or API integration. Markdown is useful for GitHub, documentation, and leadership-readable summaries.
+CSV is useful for spreadsheet review. JSON is useful for downstream workflow automation, dashboards, or API integration. Markdown is useful for GitHub and documentation. HTML is useful for a polished browser-readable risk register that can be shared or screenshotted.
 
 The exports include CSF function, category, outcomes, and rationale so reviewers can trace a risk register row back to a recognizable cybersecurity risk management language.
 
@@ -64,7 +64,7 @@ The exports include CSF function, category, outcomes, and rationale so reviewers
 The local CLI is the source of truth:
 
 ```text
-python -m oscal_risk_bridge --findings examples/oscal-assessment-results.json --mapping mappings/risk-scenarios.json --out demo-output/risk-register.csv --json-out demo-output/risk-register.json --markdown-out demo-output/risk-register.md
+python -m oscal_risk_bridge --findings examples/oscal-assessment-results.json --mapping mappings/risk-scenarios.json --out demo-output/risk-register.csv --json-out demo-output/risk-register.json --markdown-out demo-output/risk-register.md --html-out demo-output/risk-register.html
 ```
 
 The optional AWS pattern uses the same package from Lambda:

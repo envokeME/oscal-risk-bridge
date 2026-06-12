@@ -20,7 +20,7 @@ The idea is not to replace OSCAL or compliance reporting. It is to explore the l
 - Together, those findings may describe an unauthorized access scenario.
 - A failed `SC-7` finding plus `CM-6` drift may point to external attack surface exposure.
 
-The project runs locally with sample OSCAL-formatted assessment results and produces CSV, JSON, and Markdown risk register outputs. Each risk scenario includes NIST CSF 2.0 function/category/outcome alignment. I also included an optional AWS pattern using S3 and Lambda, but the core workflow does not require cloud infrastructure.
+The project runs locally with sample OSCAL-formatted assessment results and produces CSV, JSON, Markdown, and HTML risk register outputs. Each risk scenario includes NIST CSF 2.0 function/category/outcome alignment. I also included an optional AWS pattern using S3 and Lambda, but the core workflow does not require cloud infrastructure.
 
 What I like about this approach is that the mapping logic is explicit. The subjective part of risk translation lives in versioned mapping data, where it can be reviewed and improved, instead of being hidden in a scoring spreadsheet or a black-box automation tool.
 

@@ -53,7 +53,8 @@ oscal-risk-bridge `
   --mapping mappings/risk-scenarios.json `
   --out demo-output/risk-register.csv `
   --json-out demo-output/risk-register.json `
-  --markdown-out demo-output/risk-register.md
+  --markdown-out demo-output/risk-register.md `
+  --html-out demo-output/risk-register.html
 ```
 
 Expected result:
@@ -64,6 +65,7 @@ Generated 3 risk register entries.
 Wrote CSV: demo-output\risk-register.csv
 Wrote JSON: demo-output\risk-register.json
 Wrote Markdown: demo-output\risk-register.md
+Wrote HTML: demo-output\risk-register.html
 ```
 
 If `py` is not available, use `python` instead.
@@ -75,6 +77,7 @@ The tool exports the same risk register in three formats:
 - CSV for spreadsheet review
 - JSON for downstream automation
 - Markdown for GitHub, documentation, and executive-readable summaries
+- HTML for a polished browser-readable risk register
 
 Each output includes:
 
@@ -89,6 +92,7 @@ Sample outputs:
 - [Sample CSV risk register](examples/risk-register.sample.csv)
 - [Sample JSON risk register](examples/risk-register.sample.json)
 - [Sample Markdown risk report](examples/risk-register.sample.md)
+- [Sample HTML risk report](examples/risk-register.sample.html)
 - [NIST CSF alignment notes](docs/nist-csf-alignment.md)
 
 ## Project Structure
@@ -129,7 +133,7 @@ The scoring model is intentionally simple and explainable:
 
 This project intentionally starts as a CLI plus report generator. That is the right shape for a GRC engineering artifact because it is automatable, testable, and easy to wire into CI, AWS Lambda, or scheduled assessment workflows.
 
-A UI can come later as a separate dashboard layer. The current priority is evidence traceability and risk translation logic.
+The generated HTML report provides the presentation layer without requiring a web app server. A full UI can come later as a separate dashboard layer.
 
 ## AWS Pattern
 
