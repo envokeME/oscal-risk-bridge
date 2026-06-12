@@ -2,9 +2,9 @@
 
 [![tests](https://github.com/envokeME/oscal-risk-bridge/actions/workflows/tests.yml/badge.svg)](https://github.com/envokeME/oscal-risk-bridge/actions/workflows/tests.yml)
 
-OSCAL Risk Bridge is a Python risk engineering prototype that translates OSCAL-formatted control findings into business-readable risk scenarios and risk register outputs.
+OSCAL Risk Bridge is a Python GRC engineering prototype that translates OSCAL-formatted control findings into NIST CSF-aligned risk scenarios and risk register outputs.
 
-The goal is to bridge a common gap in GRC automation: control assessment tools can tell us which controls failed, but risk managers still have to explain what those failures mean in operational and leadership terms.
+The goal is to bridge a common gap in GRC automation: control assessment tools can tell us which controls failed, but risk managers still have to explain what those failures mean in operational, governance, and leadership terms.
 
 ## Why This Project Exists
 
@@ -23,17 +23,18 @@ flowchart LR
     A["OSCAL assessment-results JSON"] --> B["Parse failed findings"]
     B --> C["Normalize control IDs"]
     C --> D["Map controls to risk scenarios"]
-    D --> E["Aggregate likelihood and impact"]
-    E --> F["Export risk register"]
+    D --> E["Align to NIST CSF 2.0 outcomes"]
+    E --> F["Aggregate likelihood and impact"]
+    F --> G["Export risk register"]
 ```
 
 Given sample OSCAL assessment findings such as failed `AC-2`, `IA-2`, `AU-6`, `SC-7`, and `CM-6` controls, the tool produces risk register entries like:
 
-| Scenario | Domain | Rating | Why it matters |
+| Scenario | NIST CSF 2.0 Alignment | Rating | Why it matters |
 | --- | --- | --- | --- |
-| Unauthorized privileged access | Identity and Access Risk | Critical | Account lifecycle and MFA failures create a plausible path for misuse of privileged accounts. |
-| External attack surface exposure | Infrastructure Risk | Critical | Boundary protection gaps and configuration drift increase exposure to production systems. |
-| Delayed detection of suspicious activity | Security Operations Risk | Moderate | Inconsistent audit review reduces confidence that suspicious activity will be escalated in time. |
+| Unauthorized privileged access | PROTECT / PR.AA | Critical | Account lifecycle and MFA failures create a plausible path for misuse of privileged accounts. |
+| External attack surface exposure | IDENTIFY + PROTECT / ID.RA, PR.PS | Critical | Boundary protection gaps and configuration drift increase exposure to production systems. |
+| Delayed detection of suspicious activity | DETECT / DE.CM | Moderate | Inconsistent audit review reduces confidence that suspicious activity will be escalated in time. |
 
 ## Demo
 
@@ -75,11 +76,20 @@ The tool exports the same risk register in three formats:
 - JSON for downstream automation
 - Markdown for GitHub, documentation, and executive-readable summaries
 
+Each output includes:
+
+- Source control findings
+- Mapped risk scenario
+- NIST CSF 2.0 function/category/outcomes
+- Likelihood, impact, score, and rating
+- Evidence and recommended response
+
 Sample outputs:
 
 - [Sample CSV risk register](examples/risk-register.sample.csv)
 - [Sample JSON risk register](examples/risk-register.sample.json)
 - [Sample Markdown risk report](examples/risk-register.sample.md)
+- [NIST CSF alignment notes](docs/nist-csf-alignment.md)
 
 ## Project Structure
 
@@ -99,6 +109,7 @@ The project keeps the subjective risk translation layer in data instead of hidin
 `mappings/risk-scenarios.json` defines:
 
 - Scenario title and risk domain
+- NIST CSF 2.0 function, category, and outcome references
 - Business-readable risk statement template
 - Owner and response recommendation
 - Control mappings and weights
@@ -110,8 +121,15 @@ The scoring model is intentionally simple and explainable:
 2. Normalize control IDs such as `AC-2`, `IA-2`, or `SC-7`.
 3. Match failed controls to mapped risk scenarios.
 4. Aggregate evidence by scenario.
-5. Adjust likelihood and impact based on control weight and severity.
-6. Export a risk register a human risk owner can review.
+5. Align scenarios to NIST CSF 2.0 functions, categories, and outcomes.
+6. Adjust likelihood and impact based on control weight and severity.
+7. Export a risk register a human risk owner can review.
+
+## UI or CLI?
+
+This project intentionally starts as a CLI plus report generator. That is the right shape for a GRC engineering artifact because it is automatable, testable, and easy to wire into CI, AWS Lambda, or scheduled assessment workflows.
+
+A UI can come later as a separate dashboard layer. The current priority is evidence traceability and risk translation logic.
 
 ## AWS Pattern
 
@@ -136,4 +154,3 @@ py -m unittest discover -s tests -p "test_*.py"
 - Add richer risk treatment recommendations
 - Add optional API endpoint for uploading findings
 - Add an HTML dashboard for browsing generated risk scenarios
-

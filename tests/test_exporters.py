@@ -12,6 +12,10 @@ class ExporterTests(unittest.TestCase):
             scenario_id="RSK-001",
             title="Unauthorized privileged access",
             domain="Identity and Access Risk",
+            csf_function="PROTECT",
+            csf_category="PR.AA",
+            csf_outcomes=["PR.AA-01", "PR.AA-03"],
+            csf_rationale="Access control failures map to CSF identity outcomes.",
             risk_statement="Unauthorized access risk increases.",
             owner="Identity Platform Owner",
             response="Review and remediate privileged access.",
@@ -32,6 +36,8 @@ class ExporterTests(unittest.TestCase):
         self.assertIn("# Risk Register Report", output)
         self.assertIn("| Unauthorized privileged access |", output)
         self.assertIn("## RSK-001: Unauthorized privileged access", output)
+        self.assertIn("### NIST CSF 2.0 Alignment", output)
+        self.assertIn("PR.AA-01, PR.AA-03", output)
         self.assertIn("AC-2, IA-2", output)
 
 

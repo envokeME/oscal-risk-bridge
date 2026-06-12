@@ -9,6 +9,14 @@
       "id": "RSK-001",
       "title": "Unauthorized privileged access",
       "domain": "Identity and Access Risk",
+      "csf_function": "PROTECT",
+      "csf_category": "PR.AA - Identity Management, Authentication, and Access Control",
+      "csf_outcomes": [
+        "PR.AA-01",
+        "PR.AA-03",
+        "PR.AA-05"
+      ],
+      "csf_rationale": "The scenario maps to NIST CSF 2.0 PROTECT because the failed controls indicate weaknesses in identity management, authentication, and access enforcement.",
       "summary": "Unauthorized access risk increases when account lifecycle controls and strong authentication are not operating effectively.",
       "owner": "Identity Platform Owner",
       "response": "Disable inactive privileged accounts, enforce MFA for administrative access, and review exception handling.",
@@ -37,6 +45,14 @@
       "id": "RSK-002",
       "title": "Delayed detection of suspicious activity",
       "domain": "Security Operations Risk",
+      "csf_function": "DETECT",
+      "csf_category": "DE.CM - Continuous Monitoring",
+      "csf_outcomes": [
+        "DE.CM-01",
+        "DE.CM-03",
+        "DE.CM-09"
+      ],
+      "csf_rationale": "The scenario maps to NIST CSF 2.0 DETECT because audit review and monitoring gaps reduce timely discovery and analysis of suspicious activity.",
       "summary": "Detection and response risk increases when audit review practices are inconsistent or incomplete.",
       "owner": "Security Operations",
       "response": "Define log review cadence, automate alert routing, and track review evidence for high-value systems.",
@@ -65,6 +81,14 @@
       "id": "RSK-003",
       "title": "External attack surface exposure",
       "domain": "Infrastructure Risk",
+      "csf_function": "IDENTIFY / PROTECT",
+      "csf_category": "ID.RA - Risk Assessment; PR.PS - Platform Security",
+      "csf_outcomes": [
+        "ID.RA-01",
+        "ID.RA-05",
+        "PR.PS-01"
+      ],
+      "csf_rationale": "The scenario maps to NIST CSF 2.0 IDENTIFY and PROTECT because exposed network paths and configuration drift affect risk assessment, prioritization, and secure platform configuration.",
       "summary": "Exposure risk increases when boundary protections and configuration baselines are not consistently enforced.",
       "owner": "Cloud Infrastructure",
       "response": "Restrict inbound administrative access, review security group exceptions, and remediate baseline drift.",
@@ -91,4 +115,3 @@
     }
   ]
 }
-

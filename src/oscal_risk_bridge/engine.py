@@ -78,6 +78,10 @@ def _build_entry_for_scenario(
         scenario_id=scenario.scenario_id,
         title=scenario.title,
         domain=scenario.domain,
+        csf_function=scenario.csf_function,
+        csf_category=scenario.csf_category,
+        csf_outcomes=list(scenario.csf_outcomes),
+        csf_rationale=scenario.csf_rationale,
         risk_statement=risk_statement,
         owner=scenario.owner,
         response=scenario.response,
@@ -128,4 +132,3 @@ def _evidence_lines(findings: list[ControlFinding]) -> list[str]:
         )
 
     return lines
-

@@ -12,6 +12,10 @@ CSV_FIELDS = [
     "scenario_id",
     "title",
     "domain",
+    "csf_function",
+    "csf_category",
+    "csf_outcomes",
+    "csf_rationale",
     "rating",
     "score",
     "likelihood",
@@ -35,6 +39,7 @@ def write_csv(entries: list[RiskRegisterEntry], path: Path) -> None:
         for entry in entries:
             row = asdict(entry)
             row["failed_controls"] = "; ".join(entry.failed_controls)
+            row["csf_outcomes"] = "; ".join(entry.csf_outcomes)
             row["evidence"] = " || ".join(entry.evidence)
             row["rationale"] = " || ".join(entry.rationale)
             writer.writerow(row)
@@ -58,15 +63,16 @@ def write_markdown(entries: list[RiskRegisterEntry], path: Path) -> None:
         "",
         "## Executive Summary",
         "",
-        "| Scenario | Domain | Rating | Score | Owner |",
-        "| --- | --- | --- | ---: | --- |",
+        "| Scenario | CSF Function | CSF Category | Rating | Score | Owner |",
+        "| --- | --- | --- | --- | ---: | --- |",
     ]
 
     for entry in entries:
         lines.append(
             "| "
             f"{_escape_table(entry.title)} | "
-            f"{_escape_table(entry.domain)} | "
+            f"{_escape_table(entry.csf_function)} | "
+            f"{_escape_table(entry.csf_category)} | "
             f"{entry.rating} | "
             f"{entry.score} | "
             f"{_escape_table(entry.owner)} |"
@@ -82,6 +88,13 @@ def write_markdown(entries: list[RiskRegisterEntry], path: Path) -> None:
                 f"**Likelihood:** {entry.likelihood}/5  ",
                 f"**Impact:** {entry.impact}/5  ",
                 f"**Owner:** {entry.owner}",
+                "",
+                "### NIST CSF 2.0 Alignment",
+                "",
+                f"- Function: {entry.csf_function}",
+                f"- Category: {entry.csf_category}",
+                f"- Outcomes: {', '.join(entry.csf_outcomes)}",
+                f"- Rationale: {entry.csf_rationale}",
                 "",
                 "### Risk Statement",
                 "",

@@ -3,6 +3,14 @@
     "scenario_id": "RSK-001",
     "title": "Unauthorized privileged access",
     "domain": "Identity and Access Risk",
+    "csf_function": "PROTECT",
+    "csf_category": "PR.AA - Identity Management, Authentication, and Access Control",
+    "csf_outcomes": [
+      "PR.AA-01",
+      "PR.AA-03",
+      "PR.AA-05"
+    ],
+    "csf_rationale": "The scenario maps to NIST CSF 2.0 PROTECT because the failed controls indicate weaknesses in identity management, authentication, and access enforcement.",
     "risk_statement": "Unauthorized access risk increases because AC-2, IA-2 control failures indicate weaknesses in account lifecycle and authentication enforcement. This creates a plausible path for misuse of orphaned or weakly protected privileged accounts.",
     "owner": "Identity Platform Owner",
     "response": "Disable inactive privileged accounts, enforce MFA for administrative access, and review exception handling.",
@@ -27,6 +35,14 @@
     "scenario_id": "RSK-003",
     "title": "External attack surface exposure",
     "domain": "Infrastructure Risk",
+    "csf_function": "IDENTIFY / PROTECT",
+    "csf_category": "ID.RA - Risk Assessment; PR.PS - Platform Security",
+    "csf_outcomes": [
+      "ID.RA-01",
+      "ID.RA-05",
+      "PR.PS-01"
+    ],
+    "csf_rationale": "The scenario maps to NIST CSF 2.0 IDENTIFY and PROTECT because exposed network paths and configuration drift affect risk assessment, prioritization, and secure platform configuration.",
     "risk_statement": "External attack surface risk increases because CM-6, SC-7 control failures suggest exposed network paths and configuration drift that could be used to reach production systems.",
     "owner": "Cloud Infrastructure",
     "response": "Restrict inbound administrative access, review security group exceptions, and remediate baseline drift.",
@@ -51,6 +67,14 @@
     "scenario_id": "RSK-002",
     "title": "Delayed detection of suspicious activity",
     "domain": "Security Operations Risk",
+    "csf_function": "DETECT",
+    "csf_category": "DE.CM - Continuous Monitoring",
+    "csf_outcomes": [
+      "DE.CM-01",
+      "DE.CM-03",
+      "DE.CM-09"
+    ],
+    "csf_rationale": "The scenario maps to NIST CSF 2.0 DETECT because audit review and monitoring gaps reduce timely discovery and analysis of suspicious activity.",
     "risk_statement": "Delayed detection risk increases because AU-6 control failures reduce confidence that suspicious activity will be reviewed and escalated in time to limit business impact.",
     "owner": "Security Operations",
     "response": "Define log review cadence, automate alert routing, and track review evidence for high-value systems.",

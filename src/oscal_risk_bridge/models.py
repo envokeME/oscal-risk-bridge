@@ -48,6 +48,10 @@ class RiskScenario:
     scenario_id: str
     title: str
     domain: str
+    csf_function: str
+    csf_category: str
+    csf_outcomes: tuple[str, ...]
+    csf_rationale: str
     summary: str
     owner: str
     response: str
@@ -62,6 +66,10 @@ class RiskRegisterEntry:
     scenario_id: str
     title: str
     domain: str
+    csf_function: str
+    csf_category: str
+    csf_outcomes: list[str]
+    csf_rationale: str
     risk_statement: str
     owner: str
     response: str
@@ -76,4 +84,3 @@ class RiskRegisterEntry:
 
 def normalize_control_id(control_id: str) -> str:
     return control_id.strip().lower().replace("_", "-")
-

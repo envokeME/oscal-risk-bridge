@@ -23,12 +23,13 @@ The parser is intentionally forgiving so demo data and early assessment exports 
 
 ## 2. Map Controls to Risk Scenarios
 
-`mappings/risk-scenarios.json` defines the bridge between control language and risk language.
+`mappings/risk-scenarios.json` defines the bridge between control language, NIST CSF 2.0 outcomes, and risk language.
 
 Each scenario has:
 
 - Business-readable title
 - Domain
+- NIST CSF 2.0 function, category, outcomes, and alignment rationale
 - Base likelihood and impact
 - Owner and response recommendation
 - Control mappings with weights and rationale
@@ -37,7 +38,7 @@ This keeps the most subjective part of the project in version-controlled data in
 
 ## 3. Aggregate Scenario Evidence
 
-`engine.py` groups failed findings by normalized control ID, matches them to mapped scenarios, and computes weighted exposure.
+`engine.py` groups failed findings by normalized control ID, matches them to mapped scenarios, carries forward NIST CSF alignment metadata, and computes weighted exposure.
 
 Severity affects the calculation:
 
@@ -55,6 +56,8 @@ The model is simple by design. It is meant to produce explainable first-pass ris
 `exporters.py` writes the resulting risk register as CSV, JSON, and Markdown.
 
 CSV is useful for spreadsheet review. JSON is useful for downstream workflow automation, dashboards, or API integration. Markdown is useful for GitHub, documentation, and leadership-readable summaries.
+
+The exports include CSF function, category, outcomes, and rationale so reviewers can trace a risk register row back to a recognizable cybersecurity risk management language.
 
 ## Local vs AWS
 

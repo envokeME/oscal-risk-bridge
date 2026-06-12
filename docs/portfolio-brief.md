@@ -2,7 +2,7 @@
 
 ## Project
 
-OSCAL Risk Bridge translates OSCAL-formatted control assessment findings into risk scenarios and risk register outputs.
+OSCAL Risk Bridge translates OSCAL-formatted control assessment findings into NIST CSF-aligned risk scenarios and risk register outputs.
 
 ## Problem
 
@@ -23,14 +23,16 @@ The project uses a local-first Python CLI to:
 2. Extract failed or open control findings.
 3. Normalize control identifiers.
 4. Map control failures to risk scenarios.
-5. Aggregate likelihood, impact, evidence, and response guidance.
-6. Export CSV, JSON, and Markdown risk register outputs.
+5. Align scenarios to NIST CSF 2.0 functions, categories, and outcomes.
+6. Aggregate likelihood, impact, evidence, and response guidance.
+7. Export CSV, JSON, and Markdown risk register outputs.
 
 ## Why It Matters
 
 This project demonstrates practical risk engineering:
 
 - Understanding control frameworks and OSCAL structure
+- Applying NIST CSF as a risk communication layer
 - Translating technical findings into risk language
 - Designing explainable scoring and aggregation logic
 - Building automation that supports, rather than replaces, risk judgment
@@ -49,8 +51,7 @@ This project demonstrates practical risk engineering:
 The project is intentionally small, but it shows an end-to-end workflow:
 
 ```text
-security assessment data -> risk scenario mapping -> risk register output
+security assessment data -> NIST CSF-aligned risk scenario mapping -> risk register output
 ```
 
 That workflow is relevant to GRC engineering, security automation, cloud risk management, audit readiness, and cyber risk reporting roles.
-

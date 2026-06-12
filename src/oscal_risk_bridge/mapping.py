@@ -29,6 +29,10 @@ def _to_scenario(item: dict[str, Any]) -> RiskScenario:
         scenario_id=str(item["id"]),
         title=str(item["title"]),
         domain=str(item.get("domain", "Enterprise Risk")),
+        csf_function=str(item.get("csf_function", "GV")),
+        csf_category=str(item.get("csf_category", "GV.RM")),
+        csf_outcomes=tuple(str(outcome) for outcome in item.get("csf_outcomes", [])),
+        csf_rationale=str(item.get("csf_rationale", "")),
         summary=str(item.get("summary", "")),
         owner=str(item.get("owner", "Risk Management")),
         response=str(item.get("response", "Review control failures and define treatment plan.")),
@@ -37,4 +41,3 @@ def _to_scenario(item: dict[str, Any]) -> RiskScenario:
         mappings=mappings,
         statement_template=str(item.get("statement_template", "{summary}")),
     )
-

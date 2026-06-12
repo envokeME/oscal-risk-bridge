@@ -37,6 +37,10 @@ class EngineTests(unittest.TestCase):
                 scenario_id="RSK-001",
                 title="Unauthorized privileged access",
                 domain="Identity",
+                csf_function="PROTECT",
+                csf_category="PR.AA",
+                csf_outcomes=("PR.AA-01", "PR.AA-03"),
+                csf_rationale="Access control failures map to CSF identity outcomes.",
                 summary="Access risk increases.",
                 owner="IAM",
                 response="Fix IAM controls.",
@@ -55,6 +59,8 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(len(register), 1)
         self.assertEqual(register[0].scenario_id, "RSK-001")
         self.assertEqual(register[0].rating, "Critical")
+        self.assertEqual(register[0].csf_function, "PROTECT")
+        self.assertEqual(register[0].csf_outcomes, ["PR.AA-01", "PR.AA-03"])
         self.assertEqual(register[0].failed_controls, ["AC-2", "IA-2"])
         self.assertEqual(len(register[0].evidence), 2)
 

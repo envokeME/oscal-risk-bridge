@@ -18,11 +18,11 @@ The demo input contains five failed or open control findings:
 
 The mapping file connects control failures to risk scenarios:
 
-| Scenario | Mapped Controls |
-| --- | --- |
-| Unauthorized privileged access | AC-2, IA-2, AC-6 |
-| Delayed detection of suspicious activity | AU-6, SI-4, IR-5 |
-| External attack surface exposure | SC-7, CM-6, RA-5 |
+| Scenario | Mapped Controls | NIST CSF 2.0 Alignment |
+| --- | --- | --- |
+| Unauthorized privileged access | AC-2, IA-2, AC-6 | PROTECT / PR.AA |
+| Delayed detection of suspicious activity | AU-6, SI-4, IR-5 | DETECT / DE.CM |
+| External attack surface exposure | SC-7, CM-6, RA-5 | IDENTIFY + PROTECT / ID.RA, PR.PS |
 
 ## Command
 
@@ -54,8 +54,7 @@ The tool generates three risk register entries:
 The value of the project is not the score by itself. The value is the traceable path from evidence to risk language:
 
 ```text
-OSCAL finding -> failed control -> mapped scenario -> risk register entry
+OSCAL finding -> failed control -> mapped scenario -> NIST CSF alignment -> risk register entry
 ```
 
 This gives risk teams a starting point for review, prioritization, and treatment planning.
-

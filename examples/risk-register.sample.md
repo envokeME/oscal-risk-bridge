@@ -4,11 +4,11 @@ Generated from OSCAL assessment findings using OSCAL Risk Bridge.
 
 ## Executive Summary
 
-| Scenario | Domain | Rating | Score | Owner |
-| --- | --- | --- | ---: | --- |
-| Unauthorized privileged access | Identity and Access Risk | Critical | 25 | Identity Platform Owner |
-| External attack surface exposure | Infrastructure Risk | Critical | 25 | Cloud Infrastructure |
-| Delayed detection of suspicious activity | Security Operations Risk | Moderate | 9 | Security Operations |
+| Scenario | CSF Function | CSF Category | Rating | Score | Owner |
+| --- | --- | --- | --- | ---: | --- |
+| Unauthorized privileged access | PROTECT | PR.AA - Identity Management, Authentication, and Access Control | Critical | 25 | Identity Platform Owner |
+| External attack surface exposure | IDENTIFY / PROTECT | ID.RA - Risk Assessment; PR.PS - Platform Security | Critical | 25 | Cloud Infrastructure |
+| Delayed detection of suspicious activity | DETECT | DE.CM - Continuous Monitoring | Moderate | 9 | Security Operations |
 
 ## RSK-001: Unauthorized privileged access
 
@@ -16,6 +16,13 @@ Generated from OSCAL assessment findings using OSCAL Risk Bridge.
 **Likelihood:** 5/5  
 **Impact:** 5/5  
 **Owner:** Identity Platform Owner
+
+### NIST CSF 2.0 Alignment
+
+- Function: PROTECT
+- Category: PR.AA - Identity Management, Authentication, and Access Control
+- Outcomes: PR.AA-01, PR.AA-03, PR.AA-05
+- Rationale: The scenario maps to NIST CSF 2.0 PROTECT because the failed controls indicate weaknesses in identity management, authentication, and access enforcement.
 
 ### Risk Statement
 
@@ -42,6 +49,13 @@ Disable inactive privileged accounts, enforce MFA for administrative access, and
 **Impact:** 5/5  
 **Owner:** Cloud Infrastructure
 
+### NIST CSF 2.0 Alignment
+
+- Function: IDENTIFY / PROTECT
+- Category: ID.RA - Risk Assessment; PR.PS - Platform Security
+- Outcomes: ID.RA-01, ID.RA-05, PR.PS-01
+- Rationale: The scenario maps to NIST CSF 2.0 IDENTIFY and PROTECT because exposed network paths and configuration drift affect risk assessment, prioritization, and secure platform configuration.
+
 ### Risk Statement
 
 External attack surface risk increases because CM-6, SC-7 control failures suggest exposed network paths and configuration drift that could be used to reach production systems.
@@ -66,6 +80,13 @@ Restrict inbound administrative access, review security group exceptions, and re
 **Likelihood:** 3/5  
 **Impact:** 3/5  
 **Owner:** Security Operations
+
+### NIST CSF 2.0 Alignment
+
+- Function: DETECT
+- Category: DE.CM - Continuous Monitoring
+- Outcomes: DE.CM-01, DE.CM-03, DE.CM-09
+- Rationale: The scenario maps to NIST CSF 2.0 DETECT because audit review and monitoring gaps reduce timely discovery and analysis of suspicious activity.
 
 ### Risk Statement
 
