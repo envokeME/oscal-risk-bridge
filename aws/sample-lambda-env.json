@@ -1,0 +1,6 @@
+{
+  "OUTPUT_BUCKET": "oscal-risk-bridge-demo-output",
+  "OUTPUT_PREFIX": "risk-registers/",
+  "MAPPING_KEY": "config/risk-scenarios.json"
+}
+

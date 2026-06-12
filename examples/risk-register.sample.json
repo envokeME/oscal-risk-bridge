@@ -1,0 +1,72 @@
+[
+  {
+    "scenario_id": "RSK-001",
+    "title": "Unauthorized privileged access",
+    "domain": "Identity and Access Risk",
+    "risk_statement": "Unauthorized access risk increases because AC-2, IA-2 control failures indicate weaknesses in account lifecycle and authentication enforcement. This creates a plausible path for misuse of orphaned or weakly protected privileged accounts.",
+    "owner": "Identity Platform Owner",
+    "response": "Disable inactive privileged accounts, enforce MFA for administrative access, and review exception handling.",
+    "likelihood": 5,
+    "impact": 5,
+    "score": 25,
+    "rating": "Critical",
+    "failed_controls": [
+      "AC-2",
+      "IA-2"
+    ],
+    "evidence": [
+      "AC-2 | high | Inactive privileged accounts remain enabled: The assessment identified privileged accounts with no login activity for more than 90 days that were still enabled.",
+      "IA-2 | high | MFA not enforced for all administrative access: Administrative console access is allowed for a subset of users without phishing-resistant MFA."
+    ],
+    "rationale": [
+      "AC-2: Account management failures can leave orphaned or excessive access active.",
+      "IA-2: Weak authentication increases the probability of account takeover."
+    ]
+  },
+  {
+    "scenario_id": "RSK-003",
+    "title": "External attack surface exposure",
+    "domain": "Infrastructure Risk",
+    "risk_statement": "External attack surface risk increases because CM-6, SC-7 control failures suggest exposed network paths and configuration drift that could be used to reach production systems.",
+    "owner": "Cloud Infrastructure",
+    "response": "Restrict inbound administrative access, review security group exceptions, and remediate baseline drift.",
+    "likelihood": 5,
+    "impact": 5,
+    "score": 25,
+    "rating": "Critical",
+    "failed_controls": [
+      "CM-6",
+      "SC-7"
+    ],
+    "evidence": [
+      "SC-7 | critical | Inbound network exposure exceeds approved baseline: Security group rules permit inbound administrative access from ranges wider than the approved corporate network.",
+      "CM-6 | moderate | Configuration standard drift: A subset of compute instances deviates from the approved hardening baseline."
+    ],
+    "rationale": [
+      "SC-7: Boundary protection failures can expose services or administrative access paths.",
+      "CM-6: Configuration drift increases exploitability and operational inconsistency."
+    ]
+  },
+  {
+    "scenario_id": "RSK-002",
+    "title": "Delayed detection of suspicious activity",
+    "domain": "Security Operations Risk",
+    "risk_statement": "Delayed detection risk increases because AU-6 control failures reduce confidence that suspicious activity will be reviewed and escalated in time to limit business impact.",
+    "owner": "Security Operations",
+    "response": "Define log review cadence, automate alert routing, and track review evidence for high-value systems.",
+    "likelihood": 3,
+    "impact": 3,
+    "score": 9,
+    "rating": "Moderate",
+    "failed_controls": [
+      "AU-6"
+    ],
+    "evidence": [
+      "AU-6 | moderate | Security log review is inconsistent: Audit logs are collected, but documented review cadence is inconsistent across production accounts."
+    ],
+    "rationale": [
+      "AU-6: Audit review gaps delay identification of suspicious activity."
+    ]
+  }
+]
+

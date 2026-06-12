@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "oscal-risk-bridge"
+version = "0.1.0"
+description = "Translate OSCAL control findings into risk scenarios and risk register outputs."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Risk Engineering Demo" }
+]
+license = { text = "MIT" }
+keywords = ["oscal", "grc", "risk", "security", "risk-register"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Security",
+  "Topic :: Utilities"
+]
+
+[project.scripts]
+oscal-risk-bridge = "oscal_risk_bridge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+

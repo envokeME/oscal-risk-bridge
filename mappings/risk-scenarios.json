@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "title": "Demo risk scenario mapping",
+    "version": "0.1.0",
+    "notes": "Maps common control failures to leadership-readable risk scenarios."
+  },
+  "scenarios": [
+    {
+      "id": "RSK-001",
+      "title": "Unauthorized privileged access",
+      "domain": "Identity and Access Risk",
+      "summary": "Unauthorized access risk increases when account lifecycle controls and strong authentication are not operating effectively.",
+      "owner": "Identity Platform Owner",
+      "response": "Disable inactive privileged accounts, enforce MFA for administrative access, and review exception handling.",
+      "likelihood_base": 3,
+      "impact_base": 4,
+      "statement_template": "Unauthorized access risk increases because {controls} control failures indicate weaknesses in account lifecycle and authentication enforcement. This creates a plausible path for misuse of orphaned or weakly protected privileged accounts.",
+      "control_mappings": [
+        {
+          "control_id": "AC-2",
+          "weight": 3,
+          "rationale": "Account management failures can leave orphaned or excessive access active."
+        },
+        {
+          "control_id": "IA-2",
+          "weight": 3,
+          "rationale": "Weak authentication increases the probability of account takeover."
+        },
+        {
+          "control_id": "AC-6",
+          "weight": 2,
+          "rationale": "Least privilege failures increase blast radius after compromise."
+        }
+      ]
+    },
+    {
+      "id": "RSK-002",
+      "title": "Delayed detection of suspicious activity",
+      "domain": "Security Operations Risk",
+      "summary": "Detection and response risk increases when audit review practices are inconsistent or incomplete.",
+      "owner": "Security Operations",
+      "response": "Define log review cadence, automate alert routing, and track review evidence for high-value systems.",
+      "likelihood_base": 2,
+      "impact_base": 3,
+      "statement_template": "Delayed detection risk increases because {controls} control failures reduce confidence that suspicious activity will be reviewed and escalated in time to limit business impact.",
+      "control_mappings": [
+        {
+          "control_id": "AU-6",
+          "weight": 3,
+          "rationale": "Audit review gaps delay identification of suspicious activity."
+        },
+        {
+          "control_id": "SI-4",
+          "weight": 3,
+          "rationale": "Monitoring gaps reduce detection coverage."
+        },
+        {
+          "control_id": "IR-5",
+          "weight": 2,
+          "rationale": "Incident monitoring issues weaken escalation and coordination."
+        }
+      ]
+    },
+    {
+      "id": "RSK-003",
+      "title": "External attack surface exposure",
+      "domain": "Infrastructure Risk",
+      "summary": "Exposure risk increases when boundary protections and configuration baselines are not consistently enforced.",
+      "owner": "Cloud Infrastructure",
+      "response": "Restrict inbound administrative access, review security group exceptions, and remediate baseline drift.",
+      "likelihood_base": 3,
+      "impact_base": 4,
+      "statement_template": "External attack surface risk increases because {controls} control failures suggest exposed network paths and configuration drift that could be used to reach production systems.",
+      "control_mappings": [
+        {
+          "control_id": "SC-7",
+          "weight": 4,
+          "rationale": "Boundary protection failures can expose services or administrative access paths."
+        },
+        {
+          "control_id": "CM-6",
+          "weight": 2,
+          "rationale": "Configuration drift increases exploitability and operational inconsistency."
+        },
+        {
+          "control_id": "RA-5",
+          "weight": 2,
+          "rationale": "Weak vulnerability monitoring increases exposure duration."
+        }
+      ]
+    }
+  ]
+}
+

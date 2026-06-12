@@ -1,0 +1,15 @@
+{
+  "Records": [
+    {
+      "s3": {
+        "bucket": {
+          "name": "oscal-risk-bridge-demo-input"
+        },
+        "object": {
+          "key": "incoming/oscal-assessment-results.json"
+        }
+      }
+    }
+  ]
+}
+

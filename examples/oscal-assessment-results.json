@@ -1,0 +1,109 @@
+{
+  "assessment-results": {
+    "uuid": "2f5c6139-5b2c-4f5d-96fb-risk-demo",
+    "metadata": {
+      "title": "Demo OSCAL Assessment Results",
+      "version": "0.1.0",
+      "oscal-version": "1.1.2"
+    },
+    "results": [
+      {
+        "uuid": "result-001",
+        "title": "Cloud baseline control assessment",
+        "findings": [
+          {
+            "uuid": "finding-ac-2-001",
+            "title": "Inactive privileged accounts remain enabled",
+            "description": "The assessment identified privileged accounts with no login activity for more than 90 days that were still enabled.",
+            "target": {
+              "type": "objective-id",
+              "target-id": "AC-2"
+            },
+            "props": [
+              {
+                "name": "severity",
+                "value": "high"
+              }
+            ],
+            "status": {
+              "state": "not-satisfied"
+            }
+          },
+          {
+            "uuid": "finding-ia-2-001",
+            "title": "MFA not enforced for all administrative access",
+            "description": "Administrative console access is allowed for a subset of users without phishing-resistant MFA.",
+            "target": {
+              "type": "objective-id",
+              "target-id": "IA-2"
+            },
+            "props": [
+              {
+                "name": "severity",
+                "value": "high"
+              }
+            ],
+            "status": {
+              "state": "not-satisfied"
+            }
+          },
+          {
+            "uuid": "finding-au-6-001",
+            "title": "Security log review is inconsistent",
+            "description": "Audit logs are collected, but documented review cadence is inconsistent across production accounts.",
+            "target": {
+              "type": "objective-id",
+              "target-id": "AU-6"
+            },
+            "props": [
+              {
+                "name": "severity",
+                "value": "moderate"
+              }
+            ],
+            "status": {
+              "state": "open"
+            }
+          },
+          {
+            "uuid": "finding-sc-7-001",
+            "title": "Inbound network exposure exceeds approved baseline",
+            "description": "Security group rules permit inbound administrative access from ranges wider than the approved corporate network.",
+            "target": {
+              "type": "objective-id",
+              "target-id": "SC-7"
+            },
+            "props": [
+              {
+                "name": "severity",
+                "value": "critical"
+              }
+            ],
+            "status": {
+              "state": "not-satisfied"
+            }
+          },
+          {
+            "uuid": "finding-cm-6-001",
+            "title": "Configuration standard drift",
+            "description": "A subset of compute instances deviates from the approved hardening baseline.",
+            "target": {
+              "type": "objective-id",
+              "target-id": "CM-6"
+            },
+            "props": [
+              {
+                "name": "severity",
+                "value": "moderate"
+              }
+            ],
+            "status": {
+              "state": "partially-satisfied"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+
