@@ -146,7 +146,7 @@
 
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
       margin-bottom: 28px;
     }
@@ -425,7 +425,7 @@
       }
 
       table {
-        min-width: 760px;
+        min-width: 920px;
       }
     }
   </style>
@@ -463,14 +463,19 @@
           <div class="metric-note">Requires priority review</div>
         </div>
         <div class="metric">
-          <span class="metric-label">High / Moderate</span>
-          <span class="metric-value">1</span>
-          <div class="metric-note">0 high, 1 moderate</div>
+          <span class="metric-label">Critical / High</span>
+          <span class="metric-value">3</span>
+          <div class="metric-note">2 critical, 1 high</div>
         </div>
         <div class="metric">
           <span class="metric-label">Average Score</span>
-          <span class="metric-value">19.7</span>
+          <span class="metric-value">22.0</span>
           <div class="metric-note">Likelihood x impact</div>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Avg Confidence</span>
+          <span class="metric-value">83%</span>
+          <div class="metric-note">Coverage, evidence, and context</div>
         </div>
       </div>
 
@@ -485,6 +490,8 @@
                 <th>CSF Category</th>
                 <th>Rating</th>
                 <th>Score</th>
+                <th>Confidence</th>
+                <th>Coverage</th>
                 <th>Owner</th>
               </tr>
             </thead>
@@ -495,6 +502,8 @@
                 <td>PR.AA - Identity Management, Authentication, and Access Control</td>
                 <td><span class="badge rating-critical">Critical</span></td>
                 <td>25</td>
+                <td>88%</td>
+                <td>75%</td>
                 <td>Identity Platform Owner</td>
               </tr>
 <tr>
@@ -503,14 +512,18 @@
                 <td>ID.RA - Risk Assessment; PR.PS - Platform Security</td>
                 <td><span class="badge rating-critical">Critical</span></td>
                 <td>25</td>
+                <td>88%</td>
+                <td>75%</td>
                 <td>Cloud Infrastructure</td>
               </tr>
 <tr>
                 <td>Delayed detection of suspicious activity</td>
                 <td>DETECT</td>
                 <td>DE.CM - Continuous Monitoring</td>
-                <td><span class="badge rating-moderate">Moderate</span></td>
-                <td>9</td>
+                <td><span class="badge rating-high">High</span></td>
+                <td>16</td>
+                <td>73%</td>
+                <td>38%</td>
                 <td>Security Operations</td>
               </tr>
             </tbody>
@@ -554,6 +567,21 @@
                 <p class="label">Evidence</p>
                 <ul class="evidence-list"><li>AC-2 | high | Inactive privileged accounts remain enabled: The assessment identified privileged accounts with no login activity for more than 90 days that were still enabled.</li>
 <li>IA-2 | high | MFA not enforced for all administrative access: Administrative console access is allowed for a subset of users without phishing-resistant MFA.</li></ul>
+                <p class="label">Aggregation Notes</p>
+                <ul class="evidence-list"><li>Matched 2 of 3 mapped controls (75% weighted control coverage).</li>
+<li>Used 2 failed finding(s) with severity-adjusted weighted exposure of 9.00.</li>
+<li>Applied 9 risk context questionnaire adjustment(s).</li>
+<li>Questionnaire influence is capped at +/-1 per likelihood/impact dimension (applied likelihood +1.00, impact +1.00).</li></ul>
+                <p class="label">Context Adjustments</p>
+                <ul class="evidence-list"><li>asset_criticality: +0.5 impact (answer 4/5) - Higher asset criticality increases business impact if the risk scenario occurs. Notes: Production identity, logging, and cloud infrastructure are in scope.</li>
+<li>data_sensitivity: +0.4 impact (answer 4/5) - Sensitive data increases the consequence of unauthorized access or exposure. Notes: Administrative paths can reach systems that process customer and operational data.</li>
+<li>privileged_access_scope: +0.4 impact (answer 4/5) - Broader privileged access increases blast radius after compromise. Notes: Inactive privileged accounts remained enabled.</li>
+<li>known_exploitability: +0.45 likelihood (answer 4/5) - Known exploitability increases the probability that a weakness becomes a loss event. Notes: Account takeover and exposed administrative services are common attacker paths.</li>
+<li>compensating_controls: +0.4 likelihood (answer 2/5) - Compensating controls can reduce likelihood even when a primary control has failed. Notes: Compensating control evidence was incomplete.</li>
+<li>detection_coverage: +0.35 likelihood (answer 2/5) - Better detection coverage reduces the chance that the risk remains active long enough to create material impact. Notes: Log reviews are inconsistent across production accounts.</li>
+<li>remediation_timeline: +0.3 likelihood (answer 4/5) - Longer remediation windows increase exposure duration. Notes: Remediation depends on owner review and change windows.</li>
+<li>business_dependency: +0.45 impact (answer 4/5) - Business process dependency increases operational impact. Notes: Affected services support production operations.</li>
+<li>owner_confidence: +0.5 confidence (answer 4/5) - Confidence improves when finding data is complete, reviewed, and understood by the owner. Notes: Findings were reviewed, but the sample assessment remains a demo dataset.</li></ul>
               </div>
               <div>
                 <div class="csf-panel">
@@ -567,6 +595,8 @@
                   <div class="score-item"><span class="label">Likelihood</span><strong>5/5</strong></div>
                   <div class="score-item"><span class="label">Impact</span><strong>5/5</strong></div>
                   <div class="score-item"><span class="label">Score</span><strong>25</strong></div>
+                  <div class="score-item"><span class="label">Confidence</span><strong>88%</strong></div>
+                  <div class="score-item"><span class="label">Control Coverage</span><strong>75%</strong></div>
                 </div>
                 <p class="label" style="margin-top: 18px;">Recommended Response</p>
                 <p class="statement">Disable inactive privileged accounts, enforce MFA for administrative access, and review exception handling.</p>
@@ -591,6 +621,21 @@
                 <p class="label">Evidence</p>
                 <ul class="evidence-list"><li>SC-7 | critical | Inbound network exposure exceeds approved baseline: Security group rules permit inbound administrative access from ranges wider than the approved corporate network.</li>
 <li>CM-6 | moderate | Configuration standard drift: A subset of compute instances deviates from the approved hardening baseline.</li></ul>
+                <p class="label">Aggregation Notes</p>
+                <ul class="evidence-list"><li>Matched 2 of 3 mapped controls (75% weighted control coverage).</li>
+<li>Used 2 failed finding(s) with severity-adjusted weighted exposure of 10.00.</li>
+<li>Applied 9 risk context questionnaire adjustment(s).</li>
+<li>Questionnaire influence is capped at +/-1 per likelihood/impact dimension (applied likelihood +1.00, impact +1.00).</li></ul>
+                <p class="label">Context Adjustments</p>
+                <ul class="evidence-list"><li>asset_criticality: +0.5 impact (answer 4/5) - Higher asset criticality increases business impact if the risk scenario occurs. Notes: Production identity, logging, and cloud infrastructure are in scope.</li>
+<li>data_sensitivity: +0.4 impact (answer 4/5) - Sensitive data increases the consequence of unauthorized access or exposure. Notes: Administrative paths can reach systems that process customer and operational data.</li>
+<li>internet_exposure: +1.0 likelihood (answer 5/5) - External reachability increases opportunity for exploitation. Notes: Administrative ingress was broader than the approved corporate network.</li>
+<li>known_exploitability: +0.45 likelihood (answer 4/5) - Known exploitability increases the probability that a weakness becomes a loss event. Notes: Account takeover and exposed administrative services are common attacker paths.</li>
+<li>compensating_controls: +0.4 likelihood (answer 2/5) - Compensating controls can reduce likelihood even when a primary control has failed. Notes: Compensating control evidence was incomplete.</li>
+<li>detection_coverage: +0.35 likelihood (answer 2/5) - Better detection coverage reduces the chance that the risk remains active long enough to create material impact. Notes: Log reviews are inconsistent across production accounts.</li>
+<li>remediation_timeline: +0.3 likelihood (answer 4/5) - Longer remediation windows increase exposure duration. Notes: Remediation depends on owner review and change windows.</li>
+<li>business_dependency: +0.45 impact (answer 4/5) - Business process dependency increases operational impact. Notes: Affected services support production operations.</li>
+<li>owner_confidence: +0.5 confidence (answer 4/5) - Confidence improves when finding data is complete, reviewed, and understood by the owner. Notes: Findings were reviewed, but the sample assessment remains a demo dataset.</li></ul>
               </div>
               <div>
                 <div class="csf-panel">
@@ -604,6 +649,8 @@
                   <div class="score-item"><span class="label">Likelihood</span><strong>5/5</strong></div>
                   <div class="score-item"><span class="label">Impact</span><strong>5/5</strong></div>
                   <div class="score-item"><span class="label">Score</span><strong>25</strong></div>
+                  <div class="score-item"><span class="label">Confidence</span><strong>88%</strong></div>
+                  <div class="score-item"><span class="label">Control Coverage</span><strong>75%</strong></div>
                 </div>
                 <p class="label" style="margin-top: 18px;">Recommended Response</p>
                 <p class="statement">Restrict inbound administrative access, review security group exceptions, and remediate baseline drift.</p>
@@ -616,7 +663,7 @@
                 <h3 class="scenario-title">RSK-002: Delayed detection of suspicious activity</h3>
                 <p class="scenario-domain">Security Operations Risk</p>
               </div>
-              <div><span class="badge rating-moderate">Moderate</span></div>
+              <div><span class="badge rating-high">High</span></div>
             </div>
             <div class="scenario-body">
               <div>
@@ -626,6 +673,19 @@
                 <ul class="control-list"><li>AU-6</li></ul>
                 <p class="label">Evidence</p>
                 <ul class="evidence-list"><li>AU-6 | moderate | Security log review is inconsistent: Audit logs are collected, but documented review cadence is inconsistent across production accounts.</li></ul>
+                <p class="label">Aggregation Notes</p>
+                <ul class="evidence-list"><li>Matched 1 of 3 mapped controls (38% weighted control coverage).</li>
+<li>Used 1 failed finding(s) with severity-adjusted weighted exposure of 3.00.</li>
+<li>Applied 7 risk context questionnaire adjustment(s).</li>
+<li>Questionnaire influence is capped at +/-1 per likelihood/impact dimension (applied likelihood +1.00, impact +0.95).</li></ul>
+                <p class="label">Context Adjustments</p>
+                <ul class="evidence-list"><li>asset_criticality: +0.5 impact (answer 4/5) - Higher asset criticality increases business impact if the risk scenario occurs. Notes: Production identity, logging, and cloud infrastructure are in scope.</li>
+<li>known_exploitability: +0.45 likelihood (answer 4/5) - Known exploitability increases the probability that a weakness becomes a loss event. Notes: Account takeover and exposed administrative services are common attacker paths.</li>
+<li>compensating_controls: +0.4 likelihood (answer 2/5) - Compensating controls can reduce likelihood even when a primary control has failed. Notes: Compensating control evidence was incomplete.</li>
+<li>detection_coverage: +0.35 likelihood (answer 2/5) - Better detection coverage reduces the chance that the risk remains active long enough to create material impact. Notes: Log reviews are inconsistent across production accounts.</li>
+<li>remediation_timeline: +0.3 likelihood (answer 4/5) - Longer remediation windows increase exposure duration. Notes: Remediation depends on owner review and change windows.</li>
+<li>business_dependency: +0.45 impact (answer 4/5) - Business process dependency increases operational impact. Notes: Affected services support production operations.</li>
+<li>owner_confidence: +0.5 confidence (answer 4/5) - Confidence improves when finding data is complete, reviewed, and understood by the owner. Notes: Findings were reviewed, but the sample assessment remains a demo dataset.</li></ul>
               </div>
               <div>
                 <div class="csf-panel">
@@ -636,9 +696,11 @@
                   <p><strong>Rationale:</strong> The scenario maps to NIST CSF 2.0 DETECT because audit review and monitoring gaps reduce timely discovery and analysis of suspicious activity.</p>
                 </div>
                 <div class="score-box">
-                  <div class="score-item"><span class="label">Likelihood</span><strong>3/5</strong></div>
-                  <div class="score-item"><span class="label">Impact</span><strong>3/5</strong></div>
-                  <div class="score-item"><span class="label">Score</span><strong>9</strong></div>
+                  <div class="score-item"><span class="label">Likelihood</span><strong>4/5</strong></div>
+                  <div class="score-item"><span class="label">Impact</span><strong>4/5</strong></div>
+                  <div class="score-item"><span class="label">Score</span><strong>16</strong></div>
+                  <div class="score-item"><span class="label">Confidence</span><strong>73%</strong></div>
+                  <div class="score-item"><span class="label">Control Coverage</span><strong>38%</strong></div>
                 </div>
                 <p class="label" style="margin-top: 18px;">Recommended Response</p>
                 <p class="statement">Define log review cadence, automate alert routing, and track review evidence for high-value systems.</p>
@@ -682,6 +744,26 @@
     "rationale": [
       "AC-2: Account management failures can leave orphaned or excessive access active.",
       "IA-2: Weak authentication increases the probability of account takeover."
+    ],
+    "control_coverage": 0.75,
+    "weighted_exposure": 9.0,
+    "confidence": 88,
+    "context_adjustments": [
+      "asset_criticality: +0.5 impact (answer 4/5) - Higher asset criticality increases business impact if the risk scenario occurs. Notes: Production identity, logging, and cloud infrastructure are in scope.",
+      "data_sensitivity: +0.4 impact (answer 4/5) - Sensitive data increases the consequence of unauthorized access or exposure. Notes: Administrative paths can reach systems that process customer and operational data.",
+      "privileged_access_scope: +0.4 impact (answer 4/5) - Broader privileged access increases blast radius after compromise. Notes: Inactive privileged accounts remained enabled.",
+      "known_exploitability: +0.45 likelihood (answer 4/5) - Known exploitability increases the probability that a weakness becomes a loss event. Notes: Account takeover and exposed administrative services are common attacker paths.",
+      "compensating_controls: +0.4 likelihood (answer 2/5) - Compensating controls can reduce likelihood even when a primary control has failed. Notes: Compensating control evidence was incomplete.",
+      "detection_coverage: +0.35 likelihood (answer 2/5) - Better detection coverage reduces the chance that the risk remains active long enough to create material impact. Notes: Log reviews are inconsistent across production accounts.",
+      "remediation_timeline: +0.3 likelihood (answer 4/5) - Longer remediation windows increase exposure duration. Notes: Remediation depends on owner review and change windows.",
+      "business_dependency: +0.45 impact (answer 4/5) - Business process dependency increases operational impact. Notes: Affected services support production operations.",
+      "owner_confidence: +0.5 confidence (answer 4/5) - Confidence improves when finding data is complete, reviewed, and understood by the owner. Notes: Findings were reviewed, but the sample assessment remains a demo dataset."
+    ],
+    "aggregation_notes": [
+      "Matched 2 of 3 mapped controls (75% weighted control coverage).",
+      "Used 2 failed finding(s) with severity-adjusted weighted exposure of 9.00.",
+      "Applied 9 risk context questionnaire adjustment(s).",
+      "Questionnaire influence is capped at +/-1 per likelihood/impact dimension (applied likelihood +1.00, impact +1.00)."
     ]
   },
   {
@@ -714,6 +796,26 @@
     "rationale": [
       "SC-7: Boundary protection failures can expose services or administrative access paths.",
       "CM-6: Configuration drift increases exploitability and operational inconsistency."
+    ],
+    "control_coverage": 0.75,
+    "weighted_exposure": 10.0,
+    "confidence": 88,
+    "context_adjustments": [
+      "asset_criticality: +0.5 impact (answer 4/5) - Higher asset criticality increases business impact if the risk scenario occurs. Notes: Production identity, logging, and cloud infrastructure are in scope.",
+      "data_sensitivity: +0.4 impact (answer 4/5) - Sensitive data increases the consequence of unauthorized access or exposure. Notes: Administrative paths can reach systems that process customer and operational data.",
+      "internet_exposure: +1.0 likelihood (answer 5/5) - External reachability increases opportunity for exploitation. Notes: Administrative ingress was broader than the approved corporate network.",
+      "known_exploitability: +0.45 likelihood (answer 4/5) - Known exploitability increases the probability that a weakness becomes a loss event. Notes: Account takeover and exposed administrative services are common attacker paths.",
+      "compensating_controls: +0.4 likelihood (answer 2/5) - Compensating controls can reduce likelihood even when a primary control has failed. Notes: Compensating control evidence was incomplete.",
+      "detection_coverage: +0.35 likelihood (answer 2/5) - Better detection coverage reduces the chance that the risk remains active long enough to create material impact. Notes: Log reviews are inconsistent across production accounts.",
+      "remediation_timeline: +0.3 likelihood (answer 4/5) - Longer remediation windows increase exposure duration. Notes: Remediation depends on owner review and change windows.",
+      "business_dependency: +0.45 impact (answer 4/5) - Business process dependency increases operational impact. Notes: Affected services support production operations.",
+      "owner_confidence: +0.5 confidence (answer 4/5) - Confidence improves when finding data is complete, reviewed, and understood by the owner. Notes: Findings were reviewed, but the sample assessment remains a demo dataset."
+    ],
+    "aggregation_notes": [
+      "Matched 2 of 3 mapped controls (75% weighted control coverage).",
+      "Used 2 failed finding(s) with severity-adjusted weighted exposure of 10.00.",
+      "Applied 9 risk context questionnaire adjustment(s).",
+      "Questionnaire influence is capped at +/-1 per likelihood/impact dimension (applied likelihood +1.00, impact +1.00)."
     ]
   },
   {
@@ -731,10 +833,10 @@
     "risk_statement": "Delayed detection risk increases because AU-6 control failures reduce confidence that suspicious activity will be reviewed and escalated in time to limit business impact.",
     "owner": "Security Operations",
     "response": "Define log review cadence, automate alert routing, and track review evidence for high-value systems.",
-    "likelihood": 3,
-    "impact": 3,
-    "score": 9,
-    "rating": "Moderate",
+    "likelihood": 4,
+    "impact": 4,
+    "score": 16,
+    "rating": "High",
     "failed_controls": [
       "AU-6"
     ],
@@ -743,6 +845,24 @@
     ],
     "rationale": [
       "AU-6: Audit review gaps delay identification of suspicious activity."
+    ],
+    "control_coverage": 0.38,
+    "weighted_exposure": 3.0,
+    "confidence": 73,
+    "context_adjustments": [
+      "asset_criticality: +0.5 impact (answer 4/5) - Higher asset criticality increases business impact if the risk scenario occurs. Notes: Production identity, logging, and cloud infrastructure are in scope.",
+      "known_exploitability: +0.45 likelihood (answer 4/5) - Known exploitability increases the probability that a weakness becomes a loss event. Notes: Account takeover and exposed administrative services are common attacker paths.",
+      "compensating_controls: +0.4 likelihood (answer 2/5) - Compensating controls can reduce likelihood even when a primary control has failed. Notes: Compensating control evidence was incomplete.",
+      "detection_coverage: +0.35 likelihood (answer 2/5) - Better detection coverage reduces the chance that the risk remains active long enough to create material impact. Notes: Log reviews are inconsistent across production accounts.",
+      "remediation_timeline: +0.3 likelihood (answer 4/5) - Longer remediation windows increase exposure duration. Notes: Remediation depends on owner review and change windows.",
+      "business_dependency: +0.45 impact (answer 4/5) - Business process dependency increases operational impact. Notes: Affected services support production operations.",
+      "owner_confidence: +0.5 confidence (answer 4/5) - Confidence improves when finding data is complete, reviewed, and understood by the owner. Notes: Findings were reviewed, but the sample assessment remains a demo dataset."
+    ],
+    "aggregation_notes": [
+      "Matched 1 of 3 mapped controls (38% weighted control coverage).",
+      "Used 1 failed finding(s) with severity-adjusted weighted exposure of 3.00.",
+      "Applied 7 risk context questionnaire adjustment(s).",
+      "Questionnaire influence is capped at +/-1 per likelihood/impact dimension (applied likelihood +1.00, impact +0.95)."
     ]
   }
 ]</script>

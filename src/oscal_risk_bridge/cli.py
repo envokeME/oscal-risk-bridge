@@ -3,10 +3,12 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from .context import load_risk_context
 from .engine import build_risk_register
 from .exporters import write_csv, write_html, write_json, write_markdown
 from .mapping import load_risk_scenarios
 from .oscal import load_oscal_findings
+from .validation import format_validation_messages, has_errors, validate_oscal_file
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -16,10 +18,17 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--findings", required=True, type=Path, help="OSCAL JSON findings file")
     parser.add_argument("--mapping", required=True, type=Path, help="Risk scenario mapping JSON")
+    parser.add_argument("--questions", type=Path, help="Optional risk context question definition JSON")
+    parser.add_argument("--context", type=Path, help="Optional risk context answer JSON")
     parser.add_argument("--out", required=True, type=Path, help="CSV risk register output path")
     parser.add_argument("--json-out", type=Path, help="Optional JSON risk register output path")
     parser.add_argument("--markdown-out", type=Path, help="Optional Markdown risk report output path")
     parser.add_argument("--html-out", type=Path, help="Optional HTML risk report output path")
+    parser.add_argument(
+        "--validate-oscal",
+        action="store_true",
+        help="Validate the OSCAL assessment-results structure before generating outputs.",
+    )
     parser.add_argument(
         "--include-empty",
         action="store_true",
@@ -28,9 +37,16 @@ def main(argv: list[str] | None = None) -> int:
 
     args = parser.parse_args(argv)
 
+    if args.validate_oscal:
+        validation_messages = validate_oscal_file(args.findings)
+        print(format_validation_messages(validation_messages))
+        if has_errors(validation_messages):
+            return 2
+
     findings = load_oscal_findings(args.findings)
     scenarios = load_risk_scenarios(args.mapping)
-    entries = build_risk_register(findings, scenarios)
+    risk_context = load_risk_context(args.questions, args.context)
+    entries = build_risk_register(findings, scenarios, context=risk_context)
 
     write_csv(entries, args.out)
     if args.json_out:

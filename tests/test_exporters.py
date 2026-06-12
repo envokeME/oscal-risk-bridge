@@ -26,6 +26,11 @@ class ExporterTests(unittest.TestCase):
             failed_controls=["AC-2", "IA-2"],
             evidence=["AC-2 | high | Inactive account remains enabled."],
             rationale=["AC-2: Account lifecycle issue."],
+            control_coverage=1.0,
+            weighted_exposure=6.0,
+            confidence=88,
+            context_adjustments=["asset_criticality: +0.5 impact (answer 4/5)"],
+            aggregation_notes=["Matched 2 of 2 mapped controls."],
         )
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -37,6 +42,8 @@ class ExporterTests(unittest.TestCase):
         self.assertIn("| Unauthorized privileged access |", output)
         self.assertIn("## RSK-001: Unauthorized privileged access", output)
         self.assertIn("### NIST CSF 2.0 Alignment", output)
+        self.assertIn("**Confidence:** 88%", output)
+        self.assertIn("### Context Adjustments", output)
         self.assertIn("PR.AA-01, PR.AA-03", output)
         self.assertIn("AC-2, IA-2", output)
 
@@ -59,6 +66,11 @@ class ExporterTests(unittest.TestCase):
             failed_controls=["AC-2", "IA-2"],
             evidence=["AC-2 | high | Inactive account remains enabled."],
             rationale=["AC-2: Account lifecycle issue."],
+            control_coverage=1.0,
+            weighted_exposure=6.0,
+            confidence=88,
+            context_adjustments=["asset_criticality: +0.5 impact (answer 4/5)"],
+            aggregation_notes=["Matched 2 of 2 mapped controls."],
         )
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -70,6 +82,8 @@ class ExporterTests(unittest.TestCase):
         self.assertIn("NIST CSF-Aligned Risk Register", output)
         self.assertIn("BattleRisk", output)
         self.assertIn("AI Analysis Placeholder", output)
+        self.assertIn("Avg Confidence", output)
+        self.assertIn("Control Coverage", output)
         self.assertIn("risk-register-data", output)
         self.assertIn("Unauthorized privileged access", output)
         self.assertIn("PR.AA-01, PR.AA-03", output)

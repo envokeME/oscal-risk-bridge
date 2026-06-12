@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "Demo risk context answers",
+    "version": "0.1.0",
+    "scale": "1 = low / limited, 3 = normal, 5 = high / extensive"
+  },
+  "answers": [
+    {
+      "question_id": "asset_criticality",
+      "value": 4,
+      "notes": "Production identity, logging, and cloud infrastructure are in scope."
+    },
+    {
+      "question_id": "data_sensitivity",
+      "value": 4,
+      "notes": "Administrative paths can reach systems that process customer and operational data."
+    },
+    {
+      "question_id": "internet_exposure",
+      "value": 5,
+      "notes": "Administrative ingress was broader than the approved corporate network."
+    },
+    {
+      "question_id": "privileged_access_scope",
+      "value": 4,
+      "notes": "Inactive privileged accounts remained enabled."
+    },
+    {
+      "question_id": "known_exploitability",
+      "value": 4,
+      "notes": "Account takeover and exposed administrative services are common attacker paths."
+    },
+    {
+      "question_id": "compensating_controls",
+      "value": 2,
+      "notes": "Compensating control evidence was incomplete."
+    },
+    {
+      "question_id": "detection_coverage",
+      "value": 2,
+      "notes": "Log reviews are inconsistent across production accounts."
+    },
+    {
+      "question_id": "remediation_timeline",
+      "value": 4,
+      "notes": "Remediation depends on owner review and change windows."
+    },
+    {
+      "question_id": "business_dependency",
+      "value": 4,
+      "notes": "Affected services support production operations."
+    },
+    {
+      "question_id": "owner_confidence",
+      "value": 4,
+      "notes": "Findings were reviewed, but the sample assessment remains a demo dataset."
+    }
+  ]
+}

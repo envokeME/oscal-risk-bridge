@@ -35,6 +35,7 @@ This project uses both:
 
 - OSCAL-style input for finding structure
 - Control mappings for technical traceability
+- Risk context questions for likelihood, impact, and confidence refinement
 - NIST CSF 2.0 for risk communication
 - Risk register exports for review and decision-making
 
@@ -55,3 +56,5 @@ NIST CSF 2.0: PROTECT / PR.AA
 ```
 
 This is the GRC engineering bridge: the tool preserves the control-level evidence while translating it into a risk scenario that a control owner, risk manager, or executive can understand.
+
+The questionnaire layer helps keep CSF alignment grounded in risk management. A failed control does not always create the same level of risk in every environment, so the tool asks about context such as asset criticality, data sensitivity, exposure, compensating controls, remediation timing, and confidence in the finding data before finalizing the risk register output.

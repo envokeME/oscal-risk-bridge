@@ -61,6 +61,41 @@ class RiskScenario:
     statement_template: str
 
 
+@dataclass(frozen=True)
+class RiskContextQuestion:
+    question_id: str
+    prompt: str
+    dimension: str
+    direction: str
+    weight: float
+    applies_to: tuple[str, ...]
+    rationale: str
+
+
+@dataclass(frozen=True)
+class RiskContextAnswer:
+    question_id: str
+    value: int
+    notes: str = ""
+
+
+@dataclass(frozen=True)
+class RiskContextAdjustment:
+    question_id: str
+    prompt: str
+    dimension: str
+    delta: float
+    value: int
+    rationale: str
+    notes: str = ""
+
+
+@dataclass(frozen=True)
+class RiskContext:
+    questions: tuple[RiskContextQuestion, ...] = ()
+    answers: tuple[RiskContextAnswer, ...] = ()
+
+
 @dataclass
 class RiskRegisterEntry:
     scenario_id: str
@@ -80,6 +115,11 @@ class RiskRegisterEntry:
     failed_controls: list[str] = field(default_factory=list)
     evidence: list[str] = field(default_factory=list)
     rationale: list[str] = field(default_factory=list)
+    control_coverage: float = 0.0
+    weighted_exposure: float = 0.0
+    confidence: int = 0
+    context_adjustments: list[str] = field(default_factory=list)
+    aggregation_notes: list[str] = field(default_factory=list)
 
 
 def normalize_control_id(control_id: str) -> str:

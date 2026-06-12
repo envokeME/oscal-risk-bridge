@@ -23,9 +23,10 @@ flowchart LR
     A["OSCAL assessment-results JSON"] --> B["Parse failed findings"]
     B --> C["Normalize control IDs"]
     C --> D["Map controls to risk scenarios"]
-    D --> E["Align to NIST CSF 2.0 outcomes"]
-    E --> F["Aggregate likelihood and impact"]
-    F --> G["Export risk register"]
+    D --> E["Apply risk context questionnaire"]
+    E --> F["Align to NIST CSF 2.0 outcomes"]
+    F --> G["Aggregate likelihood, impact, and confidence"]
+    G --> H["Export risk register"]
 ```
 
 Given sample OSCAL assessment findings such as failed `AC-2`, `IA-2`, `AU-6`, `SC-7`, and `CM-6` controls, the tool produces risk register entries like:
@@ -34,7 +35,18 @@ Given sample OSCAL assessment findings such as failed `AC-2`, `IA-2`, `AU-6`, `S
 | --- | --- | --- | --- |
 | Unauthorized privileged access | PROTECT / PR.AA | Critical | Account lifecycle and MFA failures create a plausible path for misuse of privileged accounts. |
 | External attack surface exposure | IDENTIFY + PROTECT / ID.RA, PR.PS | Critical | Boundary protection gaps and configuration drift increase exposure to production systems. |
-| Delayed detection of suspicious activity | DETECT / DE.CM | Moderate | Inconsistent audit review reduces confidence that suspicious activity will be escalated in time. |
+| Delayed detection of suspicious activity | DETECT / DE.CM | High | Inconsistent audit review reduces confidence that suspicious activity will be escalated in time. |
+
+## Inputs
+
+The current demo uses four input artifacts:
+
+- `examples/oscal-assessment-results.json`: OSCAL `assessment-results` JSON with five demo findings.
+- `mappings/risk-scenarios.json`: control-to-risk-scenario mappings, NIST CSF alignment, owners, response guidance, and control weights.
+- `mappings/risk-context-questions.json`: 10 business context questions used to refine likelihood, impact, and confidence.
+- `examples/risk-context.answers.json`: sample questionnaire answers that represent risk owner or assessor context.
+
+The questionnaire captures context that a control finding alone usually cannot answer, such as asset criticality, data sensitivity, internet exposure, compensating controls, detection coverage, remediation timeline, business dependency, and confidence in the assessment data.
 
 ## Demo
 
@@ -49,8 +61,11 @@ py -m venv .venv
 py -m pip install -e .
 
 oscal-risk-bridge `
+  --validate-oscal `
   --findings examples/oscal-assessment-results.json `
   --mapping mappings/risk-scenarios.json `
+  --questions mappings/risk-context-questions.json `
+  --context examples/risk-context.answers.json `
   --out demo-output/risk-register.csv `
   --json-out demo-output/risk-register.json `
   --markdown-out demo-output/risk-register.md `
@@ -60,6 +75,7 @@ oscal-risk-bridge `
 Expected result:
 
 ```text
+OSCAL validation passed.
 Parsed 5 OSCAL findings.
 Generated 3 risk register entries.
 Wrote CSV: demo-output\risk-register.csv
@@ -72,7 +88,7 @@ If `py` is not available, use `python` instead.
 
 ## Outputs
 
-The tool exports the same risk register in three formats:
+The tool exports the same risk register in four formats:
 
 - CSV for spreadsheet review
 - JSON for downstream automation
@@ -85,6 +101,9 @@ Each output includes:
 - Mapped risk scenario
 - NIST CSF 2.0 function/category/outcomes
 - Likelihood, impact, score, and rating
+- Control coverage, weighted exposure, and confidence
+- Questionnaire context adjustments
+- Aggregation notes that explain how the scenario was scored
 - Evidence and recommended response
 - AI analysis placeholder with embedded structured risk data
 
@@ -95,6 +114,9 @@ Sample outputs:
 - [Sample Markdown risk report](examples/risk-register.sample.md)
 - [Sample HTML risk report](examples/risk-register.sample.html)
 - [NIST CSF alignment notes](docs/nist-csf-alignment.md)
+- [Input and output notes](docs/inputs-and-outputs.md)
+- [Aggregation method](docs/aggregation-method.md)
+- [OSCAL format notes](docs/oscal-format-notes.md)
 
 ## Project Structure
 
@@ -122,13 +144,18 @@ The project keeps the subjective risk translation layer in data instead of hidin
 
 The scoring model is intentionally simple and explainable:
 
-1. Parse failed or open OSCAL findings.
+1. Parse failed or not-satisfied OSCAL findings.
 2. Normalize control IDs such as `AC-2`, `IA-2`, or `SC-7`.
 3. Match failed controls to mapped risk scenarios.
 4. Aggregate evidence by scenario.
-5. Align scenarios to NIST CSF 2.0 functions, categories, and outcomes.
+5. Calculate weighted control coverage for the mapped scenario.
 6. Adjust likelihood and impact based on control weight and severity.
-7. Export a risk register a human risk owner can review.
+7. Apply bounded questionnaire context adjustments.
+8. Estimate confidence based on evidence, coverage, and context completeness.
+9. Align scenarios to NIST CSF 2.0 functions, categories, and outcomes.
+10. Export a risk register a human risk owner can review.
+
+Questionnaire adjustments are capped at +/-1 per likelihood/impact dimension so business context improves the risk estimate without overwhelming the control evidence.
 
 ## UI or CLI?
 
@@ -155,7 +182,6 @@ py -m unittest discover -s tests -p "test_*.py"
 ## Roadmap
 
 - Support more OSCAL assessment-results fields
-- Add scenario confidence scoring
 - Add richer risk treatment recommendations
 - Add optional API endpoint for uploading findings
 - Add an HTML dashboard for browsing generated risk scenarios

@@ -20,12 +20,14 @@ Individually, these are control failures. Together, they describe a more useful 
 The project uses a local-first Python CLI to:
 
 1. Parse OSCAL assessment-results JSON.
-2. Extract failed or open control findings.
-3. Normalize control identifiers.
-4. Map control failures to risk scenarios.
-5. Align scenarios to NIST CSF 2.0 functions, categories, and outcomes.
-6. Aggregate likelihood, impact, evidence, and response guidance.
-7. Export CSV, JSON, Markdown, and HTML risk register outputs.
+2. Optionally validate the OSCAL structure used by the demo.
+3. Extract failed control findings.
+4. Load risk context questionnaire answers.
+5. Normalize control identifiers.
+6. Map control failures to risk scenarios.
+7. Align scenarios to NIST CSF 2.0 functions, categories, and outcomes.
+8. Aggregate likelihood, impact, confidence, evidence, and response guidance.
+9. Export CSV, JSON, Markdown, and HTML risk register outputs.
 
 ## Why It Matters
 
@@ -34,7 +36,7 @@ This project demonstrates practical risk engineering:
 - Understanding control frameworks and OSCAL structure
 - Applying NIST CSF as a risk communication layer
 - Translating technical findings into risk language
-- Designing explainable scoring and aggregation logic
+- Designing explainable scoring with weighted control coverage, context adjustments, and confidence
 - Building automation that supports, rather than replaces, risk judgment
 - Producing artifacts that can be used by risk managers and leadership
 
@@ -46,6 +48,8 @@ This project demonstrates practical risk engineering:
 - Optional AWS Lambda/S3 deployment pattern
 - GitHub Actions test workflow
 - Static HTML report generation
+- OSCAL structure validation guardrail
+- Data-driven risk context questionnaire
 - AI-ready embedded report data for future model review
 
 ## Employer-Relevant Signal
@@ -53,7 +57,7 @@ This project demonstrates practical risk engineering:
 The project is intentionally small, but it shows an end-to-end workflow:
 
 ```text
-security assessment data -> NIST CSF-aligned risk scenario mapping -> risk register output
+OSCAL assessment data -> context questionnaire -> CSF-aligned scenario aggregation -> risk register output
 ```
 
 That workflow is relevant to GRC engineering, security automation, cloud risk management, audit readiness, and cyber risk reporting roles.

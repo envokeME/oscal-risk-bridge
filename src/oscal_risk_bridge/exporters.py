@@ -21,12 +21,17 @@ CSV_FIELDS = [
     "score",
     "likelihood",
     "impact",
+    "confidence",
+    "control_coverage",
+    "weighted_exposure",
     "owner",
     "response",
     "failed_controls",
     "risk_statement",
     "evidence",
     "rationale",
+    "context_adjustments",
+    "aggregation_notes",
 ]
 
 
@@ -43,6 +48,8 @@ def write_csv(entries: list[RiskRegisterEntry], path: Path) -> None:
             row["csf_outcomes"] = "; ".join(entry.csf_outcomes)
             row["evidence"] = " || ".join(entry.evidence)
             row["rationale"] = " || ".join(entry.rationale)
+            row["context_adjustments"] = " || ".join(entry.context_adjustments)
+            row["aggregation_notes"] = " || ".join(entry.aggregation_notes)
             writer.writerow(row)
 
 
@@ -64,8 +71,8 @@ def write_markdown(entries: list[RiskRegisterEntry], path: Path) -> None:
         "",
         "## Executive Summary",
         "",
-        "| Scenario | CSF Function | CSF Category | Rating | Score | Owner |",
-        "| --- | --- | --- | --- | ---: | --- |",
+        "| Scenario | CSF Function | CSF Category | Rating | Score | Confidence | Coverage | Owner |",
+        "| --- | --- | --- | --- | ---: | ---: | ---: | --- |",
     ]
 
     for entry in entries:
@@ -76,6 +83,8 @@ def write_markdown(entries: list[RiskRegisterEntry], path: Path) -> None:
             f"{_escape_table(entry.csf_category)} | "
             f"{entry.rating} | "
             f"{entry.score} | "
+            f"{entry.confidence}% | "
+            f"{_percent(entry.control_coverage)} | "
             f"{_escape_table(entry.owner)} |"
         )
 
@@ -88,6 +97,8 @@ def write_markdown(entries: list[RiskRegisterEntry], path: Path) -> None:
                 f"**Rating:** {entry.rating}  ",
                 f"**Likelihood:** {entry.likelihood}/5  ",
                 f"**Impact:** {entry.impact}/5  ",
+                f"**Confidence:** {entry.confidence}%  ",
+                f"**Control Coverage:** {_percent(entry.control_coverage)}  ",
                 f"**Owner:** {entry.owner}",
                 "",
                 "### NIST CSF 2.0 Alignment",
@@ -110,6 +121,13 @@ def write_markdown(entries: list[RiskRegisterEntry], path: Path) -> None:
             ]
         )
         lines.extend(f"- {evidence}" for evidence in entry.evidence)
+        lines.extend(["", "### Aggregation Notes", ""])
+        lines.extend(f"- {note}" for note in entry.aggregation_notes)
+        lines.extend(["", "### Context Adjustments", ""])
+        if entry.context_adjustments:
+            lines.extend(f"- {adjustment}" for adjustment in entry.context_adjustments)
+        else:
+            lines.append("- No questionnaire context adjustments were applied.")
         lines.extend(["", "### Recommended Response", "", entry.response, ""])
 
     with path.open("w", encoding="utf-8") as file:
@@ -121,14 +139,20 @@ def _escape_table(value: str) -> str:
     return value.replace("|", "\\|")
 
 
+def _percent(value: float) -> str:
+    return f"{value:.0%}"
+
+
 def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
 
     total = len(entries)
     critical = sum(1 for entry in entries if entry.rating == "Critical")
     high = sum(1 for entry in entries if entry.rating == "High")
-    moderate = sum(1 for entry in entries if entry.rating == "Moderate")
     average_score = round(sum(entry.score for entry in entries) / total, 1) if total else 0
+    average_confidence = (
+        round(sum(entry.confidence for entry in entries) / total) if total else 0
+    )
 
     report = f"""<!doctype html>
 <html lang="en">
@@ -278,7 +302,7 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
 
     .summary-grid {{
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
       margin-bottom: 28px;
     }}
@@ -557,7 +581,7 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
       }}
 
       table {{
-        min-width: 760px;
+        min-width: 920px;
       }}
     }}
   </style>
@@ -595,14 +619,19 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
           <div class="metric-note">Requires priority review</div>
         </div>
         <div class="metric">
-          <span class="metric-label">High / Moderate</span>
-          <span class="metric-value">{high + moderate}</span>
-          <div class="metric-note">{high} high, {moderate} moderate</div>
+          <span class="metric-label">Critical / High</span>
+          <span class="metric-value">{critical + high}</span>
+          <div class="metric-note">{critical} critical, {high} high</div>
         </div>
         <div class="metric">
           <span class="metric-label">Average Score</span>
           <span class="metric-value">{average_score}</span>
           <div class="metric-note">Likelihood x impact</div>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Avg Confidence</span>
+          <span class="metric-value">{average_confidence}%</span>
+          <div class="metric-note">Coverage, evidence, and context</div>
         </div>
       </div>
 
@@ -617,6 +646,8 @@ def write_html(entries: list[RiskRegisterEntry], path: Path) -> None:
                 <th>CSF Category</th>
                 <th>Rating</th>
                 <th>Score</th>
+                <th>Confidence</th>
+                <th>Coverage</th>
                 <th>Owner</th>
               </tr>
             </thead>
@@ -670,6 +701,8 @@ def _summary_rows(entries: list[RiskRegisterEntry]) -> str:
                 <td>{_h(entry.csf_category)}</td>
                 <td>{_rating_badge(entry.rating)}</td>
                 <td>{entry.score}</td>
+                <td>{entry.confidence}%</td>
+                <td>{_percent(entry.control_coverage)}</td>
                 <td>{_h(entry.owner)}</td>
               </tr>"""
         for entry in entries
@@ -681,8 +714,13 @@ def _scenario_cards(entries: list[RiskRegisterEntry]) -> str:
 
 
 def _scenario_card(entry: RiskRegisterEntry) -> str:
-    controls = "\n".join(f"<li>{_h(control)}</li>" for control in entry.failed_controls)
-    evidence = "\n".join(f"<li>{_h(item)}</li>" for item in entry.evidence)
+    controls = _list_items(entry.failed_controls)
+    evidence = _list_items(entry.evidence)
+    aggregation_notes = _list_items(entry.aggregation_notes)
+    context_adjustments = _list_items(
+        entry.context_adjustments,
+        empty_text="No questionnaire context adjustments were applied.",
+    )
     outcomes = ", ".join(_h(outcome) for outcome in entry.csf_outcomes)
 
     return f"""<article class="scenario">
@@ -701,6 +739,10 @@ def _scenario_card(entry: RiskRegisterEntry) -> str:
                 <ul class="control-list">{controls}</ul>
                 <p class="label">Evidence</p>
                 <ul class="evidence-list">{evidence}</ul>
+                <p class="label">Aggregation Notes</p>
+                <ul class="evidence-list">{aggregation_notes}</ul>
+                <p class="label">Context Adjustments</p>
+                <ul class="evidence-list">{context_adjustments}</ul>
               </div>
               <div>
                 <div class="csf-panel">
@@ -714,6 +756,8 @@ def _scenario_card(entry: RiskRegisterEntry) -> str:
                   <div class="score-item"><span class="label">Likelihood</span><strong>{entry.likelihood}/5</strong></div>
                   <div class="score-item"><span class="label">Impact</span><strong>{entry.impact}/5</strong></div>
                   <div class="score-item"><span class="label">Score</span><strong>{entry.score}</strong></div>
+                  <div class="score-item"><span class="label">Confidence</span><strong>{entry.confidence}%</strong></div>
+                  <div class="score-item"><span class="label">Control Coverage</span><strong>{_percent(entry.control_coverage)}</strong></div>
                 </div>
                 <p class="label" style="margin-top: 18px;">Recommended Response</p>
                 <p class="statement">{_h(entry.response)}</p>
@@ -725,6 +769,12 @@ def _scenario_card(entry: RiskRegisterEntry) -> str:
 def _rating_badge(rating: str) -> str:
     css_class = f"rating-{rating.lower()}"
     return f'<span class="badge {css_class}">{_h(rating)}</span>'
+
+
+def _list_items(items: list[str], empty_text: str = "No items provided.") -> str:
+    if not items:
+        return f"<li>{_h(empty_text)}</li>"
+    return "\n".join(f"<li>{_h(item)}</li>" for item in items)
 
 
 def _h(value: str) -> str:

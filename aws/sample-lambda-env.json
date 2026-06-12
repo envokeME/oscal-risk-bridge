@@ -1,6 +1,8 @@
 {
   "OUTPUT_BUCKET": "oscal-risk-bridge-demo-output",
   "OUTPUT_PREFIX": "risk-registers/",
-  "MAPPING_KEY": "config/risk-scenarios.json"
+  "MAPPING_KEY": "config/risk-scenarios.json",
+  "QUESTIONS_KEY": "config/risk-context-questions.json",
+  "CONTEXT_KEY": "config/risk-context.answers.json",
+  "VALIDATE_OSCAL": "true"
 }
-

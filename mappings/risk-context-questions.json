@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "title": "Risk context questionnaire",
+    "version": "0.1.0",
+    "scale": "1 = low / limited, 3 = normal, 5 = high / extensive",
+    "notes": "These questions capture business context that a control finding alone does not provide."
+  },
+  "questions": [
+    {
+      "id": "asset_criticality",
+      "prompt": "How critical are the affected systems or assets to business operations?",
+      "dimension": "impact",
+      "direction": "increase",
+      "weight": 1.0,
+      "applies_to": [
+        "*"
+      ],
+      "rationale": "Higher asset criticality increases business impact if the risk scenario occurs."
+    },
+    {
+      "id": "data_sensitivity",
+      "prompt": "Do the affected systems store or process sensitive, regulated, or high-value data?",
+      "dimension": "impact",
+      "direction": "increase",
+      "weight": 0.8,
+      "applies_to": [
+        "RSK-001",
+        "RSK-003"
+      ],
+      "rationale": "Sensitive data increases the consequence of unauthorized access or exposure."
+    },
+    {
+      "id": "internet_exposure",
+      "prompt": "Are affected systems reachable from the internet or broad external networks?",
+      "dimension": "likelihood",
+      "direction": "increase",
+      "weight": 1.0,
+      "applies_to": [
+        "RSK-003"
+      ],
+      "rationale": "External reachability increases opportunity for exploitation."
+    },
+    {
+      "id": "privileged_access_scope",
+      "prompt": "How broad is the privileged access scope involved in the findings?",
+      "dimension": "impact",
+      "direction": "increase",
+      "weight": 0.8,
+      "applies_to": [
+        "RSK-001"
+      ],
+      "rationale": "Broader privileged access increases blast radius after compromise."
+    },
+    {
+      "id": "known_exploitability",
+      "prompt": "Are the weaknesses easy to exploit with known techniques or commodity tooling?",
+      "dimension": "likelihood",
+      "direction": "increase",
+      "weight": 0.9,
+      "applies_to": [
+        "*"
+      ],
+      "rationale": "Known exploitability increases the probability that a weakness becomes a loss event."
+    },
+    {
+      "id": "compensating_controls",
+      "prompt": "Are there effective compensating controls that reduce the scenario likelihood?",
+      "dimension": "likelihood",
+      "direction": "decrease",
+      "weight": 0.8,
+      "applies_to": [
+        "*"
+      ],
+      "rationale": "Compensating controls can reduce likelihood even when a primary control has failed."
+    },
+    {
+      "id": "detection_coverage",
+      "prompt": "How strong is current monitoring, alerting, and escalation coverage for this scenario?",
+      "dimension": "likelihood",
+      "direction": "decrease",
+      "weight": 0.7,
+      "applies_to": [
+        "RSK-001",
+        "RSK-002",
+        "RSK-003"
+      ],
+      "rationale": "Better detection coverage reduces the chance that the risk remains active long enough to create material impact."
+    },
+    {
+      "id": "remediation_timeline",
+      "prompt": "Will remediation take longer than the organization's normal risk acceptance window?",
+      "dimension": "likelihood",
+      "direction": "increase",
+      "weight": 0.6,
+      "applies_to": [
+        "*"
+      ],
+      "rationale": "Longer remediation windows increase exposure duration."
+    },
+    {
+      "id": "business_dependency",
+      "prompt": "Would interruption or misuse of the affected system disrupt a business-critical process?",
+      "dimension": "impact",
+      "direction": "increase",
+      "weight": 0.9,
+      "applies_to": [
+        "*"
+      ],
+      "rationale": "Business process dependency increases operational impact."
+    },
+    {
+      "id": "owner_confidence",
+      "prompt": "How confident are the control owner and assessor in the completeness of the finding data?",
+      "dimension": "confidence",
+      "direction": "increase",
+      "weight": 1.0,
+      "applies_to": [
+        "*"
+      ],
+      "rationale": "Confidence improves when finding data is complete, reviewed, and understood by the owner."
+    }
+  ]
+}
